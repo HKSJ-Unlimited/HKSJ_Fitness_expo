@@ -1,9 +1,10 @@
+import CustomText from "@/components/ui/CustomText";
 import { Text, StyleSheet, View } from "react-native";
 
-export default function TabOneScreen() {
+export default function Dashboard() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
+      <CustomText className="text-2xl">Tab One</CustomText>
     </View>
   );
 }

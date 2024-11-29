@@ -1,9 +1,8 @@
-import { View, Text, SafeAreaView } from "react-native";
+import { Text, SafeAreaView } from "react-native";
 import React from "react";
 import { useRouter } from "expo-router";
 import {
   GoogleSignin,
-  GoogleSigninButton,
   isErrorWithCode,
   isSuccessResponse,
   statusCodes,
@@ -21,7 +20,7 @@ const SignIn = () => {
       console.log(response.data);
       if (isSuccessResponse(response)) {
         console.log({ userInfo: response.data });
-        router.replace("/(tabs)");
+        router.replace("/(tabs)/dashboard");
       } else {
         // sign in was cancelled by user
       }

@@ -1,4 +1,4 @@
-package com.HKSJ.HKSJ_Fitness
+package com.HKSJ.Fitness
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

@@ -1,4 +1,4 @@
-package com.HKSJ.HKSJ_Fitness
+package com.HKSJ.Fitness
 
 import android.app.Application
 import android.content.res.Configuration

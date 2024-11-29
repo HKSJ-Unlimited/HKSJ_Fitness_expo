@@ -1,9 +1,10 @@
+import CustomText from "@/components/ui/CustomText";
 import { StyleSheet, View, Text } from "react-native";
 
 export default function Diary() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
+      <CustomText>Tab Two</CustomText>
     </View>
   );
 }

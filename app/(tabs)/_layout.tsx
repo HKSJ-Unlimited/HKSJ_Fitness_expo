@@ -1,35 +1,31 @@
 import React from "react";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
 
 import { ThemeToggle } from "@/components/ThemeToggle";
-
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
+import { LayoutDashboard, NotebookPen } from "lucide-react-native";
+import { View, Text, SafeAreaView } from "react-native";
+import Header from "@/components/Header";
 
 export default function TabLayout() {
   return (
-    <Tabs>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Tab One",
-          headerRight: () => <ThemeToggle />,
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="two"
-        options={{
-          title: "Tab Two",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-    </Tabs>
+    <SafeAreaView style={{ display: "flex", flex: 1 }}>
+      <Tabs>
+        <Tabs.Screen
+          name="dashboard"
+          options={{
+            title: "Dashboard",
+            headerTitle: (props) => <Header />,
+            tabBarIcon: ({ color }) => <LayoutDashboard color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="diary"
+          options={{
+            title: "Diary",
+            tabBarIcon: ({ color }) => <NotebookPen color={color} />,
+          }}
+        />
+      </Tabs>
+    </SafeAreaView>
   );
 }

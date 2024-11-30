@@ -25,7 +25,7 @@ const SignIn = () => {
       console.log(response.data);
       if (isSuccessResponse(response)) {
         console.log({ userInfo: response.data });
-        router.replace("/(tabs)/dashboard");
+        router.replace("/(auth)/(tabs)/dashboard");
       } else {
         // sign in was cancelled by user
       }

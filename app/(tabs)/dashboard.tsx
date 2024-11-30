@@ -1,3 +1,4 @@
+import CustomButton from "@/components/ui/CustomButton";
 import CustomText from "@/components/ui/CustomText";
 import { Text, StyleSheet, View } from "react-native";
 
@@ -5,6 +6,9 @@ export default function Dashboard() {
   return (
     <View style={styles.container}>
       <CustomText className="text-2xl">Tab One</CustomText>
+      <CustomButton className="p-2">
+        <CustomText className="text-primary-foreground">Press me</CustomText>
+      </CustomButton>
     </View>
   );
 }

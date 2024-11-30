@@ -6,9 +6,7 @@ export default function Dashboard() {
   return (
     <View style={styles.container}>
       <CustomText className="text-2xl">Tab One</CustomText>
-      <CustomButton className="p-2">
-        <CustomText className="text-primary-foreground">Press me</CustomText>
-      </CustomButton>
+      <CustomButton title="Press me" className="p-2" />
     </View>
   );
 }

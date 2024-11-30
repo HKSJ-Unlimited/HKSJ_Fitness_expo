@@ -8,16 +8,13 @@ import {
   statusCodes,
 } from "@react-native-google-signin/google-signin";
 import CustomButton from "@/components/ui/CustomButton";
-import CustomText from "@/components/ui/CustomText";
-import { Chrome } from "lucide-react-native";
-import { useColorScheme } from "@/lib/useColorScheme";
+import { Chrome } from "@/lib/icons/Chrome";
 GoogleSignin.configure({
   webClientId:
     "398697559104-8avft3hudnj39at7gtt1jnrngc1r19c5.apps.googleusercontent.com",
 });
 const SignIn = () => {
   const router = useRouter();
-  const { colorScheme } = useColorScheme();
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -58,11 +55,12 @@ const SignIn = () => {
   };
   return (
     <SafeAreaView className="flex flex-1 justify-center items-center">
-      <CustomButton className="p-3 px-12 flex flex-row gap-2" onPress={signIn}>
-        <Chrome color={colorScheme === "dark" ? "black" : "white"} />
-        <CustomText className="text-primary-foreground">
-          Sign in with Google
-        </CustomText>
+      <CustomButton
+        title="Sign in with Google"
+        className="p-3 px-12 flex flex-row-reverse gap-2"
+        onPress={signIn}
+      >
+        <Chrome className="text-primary-foreground" />
       </CustomButton>
     </SafeAreaView>
   );

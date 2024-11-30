@@ -4,9 +4,11 @@ import { Image, View } from "react-native";
 
 type CustomAvatarProps = {
   className?: string;
+  src: string;
 };
 export default function CustomAvatar({
   className,
+  src,
   ...props
 }: CustomAvatarProps) {
   return (
@@ -18,8 +20,9 @@ export default function CustomAvatar({
       )}
     >
       <Image
-        className="w-10 h-10 rounded-full"
-        src="https://randomuser.me/api/portraits"
+        style={{ width: "90%", height: "90%" }}
+        className="rounded-full"
+        src={src}
       />
     </View>
   );

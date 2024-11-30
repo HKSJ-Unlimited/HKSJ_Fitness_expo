@@ -2,11 +2,15 @@ import { View, Text, SafeAreaView } from "react-native";
 import React, { ReactNode } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 import CustomText from "./ui/CustomText";
+import CustomAvatar from "./ui/CustomAvatar";
+import { Link } from "expo-router";
 
 const Header = () => {
   return (
     <View className="flex flex-1 min-w-full flex-row justify-between items-center">
-      <CustomText className="text-2xl">User</CustomText>
+      <Link href="/user/profile">
+        <CustomAvatar />
+      </Link>
       <CustomText className="text-2xl">HKSJ Fitness</CustomText>
       <ThemeToggle />
     </View>

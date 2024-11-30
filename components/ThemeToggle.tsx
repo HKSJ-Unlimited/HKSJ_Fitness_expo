@@ -24,7 +24,11 @@ export function ThemeToggle() {
           )}
         >
           {isDarkColorScheme ? (
-            <MoonStar className="text-white" size={23} strokeWidth={1.25} />
+            <MoonStar
+              className="text-foreground"
+              size={23}
+              strokeWidth={1.25}
+            />
           ) : (
             <Sun className="text-foreground" size={24} strokeWidth={1.25} />
           )}

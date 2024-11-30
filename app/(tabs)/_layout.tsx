@@ -1,10 +1,10 @@
 import React from "react";
 import { Tabs } from "expo-router";
 
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { LayoutDashboard, NotebookPen } from "lucide-react-native";
-import { View, Text, SafeAreaView } from "react-native";
+import { SafeAreaView } from "react-native";
 import Header from "@/components/Header";
+import { LayoutDashboard } from "@/lib/icons/LayoutDashboard";
+import { NotebookPen } from "@/lib/icons/NotebookPen";
 
 export default function TabLayout() {
   return (

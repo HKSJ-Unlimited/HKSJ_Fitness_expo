@@ -1,5 +1,5 @@
-import { View, LayoutChangeEvent } from "react-native";
-import React from "react";
+import { View, LayoutChangeEvent, Dimensions } from "react-native";
+import React, { useEffect } from "react";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs/lib/typescript/commonjs/src/types";
 import TabBarButton from "./TabBarButton";
 import Animated, {
@@ -13,6 +13,7 @@ const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
     height: 20,
     width: 100,
   });
+  const { width, height } = Dimensions.get("window");
   const buttonWidth = dimensions.width / state.routes.length;
   const onTabBarLayout = (event: LayoutChangeEvent) => {
     setDimensions({
@@ -26,19 +27,24 @@ const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
       transform: [{ translateX: tabPositionX.value }],
     };
   });
+  useEffect(() => {
+    tabPositionX.value = withSpring(buttonWidth * state.index, {
+      duration: 1500,
+    });
+  }, [state.index]);
   return (
     <View
       onLayout={onTabBarLayout}
       style={{
         position: "absolute",
-        bottom: 0,
+        bottom: height * 0.02,
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        marginHorizontal: 30,
-        paddingVertical: 15,
-        borderRadius: 30,
-        maxHeight: 65,
+        marginHorizontal: width * 0.05,
+        paddingVertical: height * 0.02,
+        borderRadius: width * 0.1,
+        maxHeight: height * 0.1,
       }}
       className="bg-primary-foreground"
     >
@@ -46,10 +52,12 @@ const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
         style={[
           animatedStyle,
           {
-            marginHorizontal: 30,
+            marginHorizontal: 25,
+            width: buttonWidth - 50,
+            height: dimensions.height - 10,
           },
         ]}
-        className="h-16 w-16 rounded-full absolute bg-primary opacity-10"
+        className="rounded-full absolute bg-primary opacity-10"
       />
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];

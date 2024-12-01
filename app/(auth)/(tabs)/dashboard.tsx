@@ -1,12 +1,14 @@
 import CustomButton from "@/components/ui/CustomButton";
 import CustomText from "@/components/ui/CustomText";
-import { Text, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 export default function Dashboard() {
   return (
-    <View style={styles.container}>
-      <CustomText className="text-2xl">Tab One</CustomText>
-      <CustomButton title="Press me" className="p-2" />
+    <View className="flex flex-1 flex-col">
+      <View style={styles.container}>
+        <CustomText className="text-2xl">Tab One</CustomText>
+        <CustomButton title="Press me" className="p-2" />
+      </View>
     </View>
   );
 }

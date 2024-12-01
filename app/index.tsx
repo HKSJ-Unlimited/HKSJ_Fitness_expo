@@ -1,4 +1,3 @@
-import { Text, SafeAreaView } from "react-native";
 import React from "react";
 import { useRouter } from "expo-router";
 import {
@@ -9,6 +8,7 @@ import {
 } from "@react-native-google-signin/google-signin";
 import CustomButton from "@/components/ui/CustomButton";
 import { Chrome } from "@/lib/icons/Chrome";
+import { SafeAreaView } from "react-native-safe-area-context";
 GoogleSignin.configure({
   webClientId:
     "398697559104-8avft3hudnj39at7gtt1jnrngc1r19c5.apps.googleusercontent.com",

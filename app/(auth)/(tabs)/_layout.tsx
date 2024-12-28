@@ -6,7 +6,12 @@ import BottomNavigationBar from "@/components/BottomNavigationBar";
 
 export default function TabLayout() {
   return (
-    <Tabs tabBar={(props) => <BottomNavigationBar {...props} />}>
+    <Tabs
+      screenOptions={{
+        tabBarHideOnKeyboard: true,
+      }}
+      tabBar={(props) => <BottomNavigationBar {...props} />}
+    >
       <Tabs.Screen
         name="dashboard"
         options={{

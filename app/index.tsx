@@ -18,14 +18,14 @@ const SignIn = () => {
   const signIn = async () => {
     try {
       router.replace("/(auth)/(tabs)/dashboard");
-      await GoogleSignin.hasPlayServices();
-      const response = await GoogleSignin.signIn();
-      console.log(response.data);
-      if (isSuccessResponse(response)) {
-        console.log({ userInfo: response.data });
-      } else {
-        // sign in was cancelled by user
-      }
+      // await GoogleSignin.hasPlayServices();
+      // const response = await GoogleSignin.signIn();
+      // console.log(response.data);
+      // if (isSuccessResponse(response)) {
+      //   console.log({ userInfo: response.data });
+      // } else {
+      //   // sign in was cancelled by user
+      // }
     } catch (error) {
       if (isErrorWithCode(error)) {
         console.log(error.message);

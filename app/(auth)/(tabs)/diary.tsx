@@ -1,99 +1,118 @@
+import { FlatList, View } from "react-native";
 import CustomButton from "@/components/ui/CustomButton";
 import CustomCard from "@/components/ui/CustomCard";
 import CustomText from "@/components/ui/CustomText";
+import { Link } from "expo-router";
+import { EggFried } from "@/lib/icons/EggFried";
+import { CookingPot } from "@/lib/icons/CookingPot";
+import { Soup } from "@/lib/icons/Soup";
 import { Beer } from "@/lib/icons/Beer";
 import { CirclePlus } from "@/lib/icons/CirclePlus";
-import { CookingPot } from "@/lib/icons/CookingPot";
-import { EggFried } from "@/lib/icons/EggFried";
-import { Soup } from "@/lib/icons/Soup";
-import { Link } from "expo-router";
 
-import { View } from "react-native";
+const data = [
+  {
+    id: 1,
+    name: "Chicken, breast, boneless, skinless, raw",
+    nutrition: "100g, 165Kcal, 31g Protein, 3.6g Fat, 0g Carbs",
+  },
+  {
+    id: 2,
+    name: "Rice",
+    nutrition: "100g, 130Kcal, 2.7g Protein, 0.3g Fat, 28g Carbs",
+  },
+  {
+    id: 3,
+    name: "Broccoli",
+    nutrition: "100g, 34Kcal, 2.8g Protein, 0.4g Fat, 6g Carbs",
+  },
+];
+
+const meals = [
+  {
+    type: "Breakfast",
+    icon: EggFried,
+    data,
+  },
+  {
+    type: "Lunch",
+    icon: CookingPot,
+    data,
+  },
+  {
+    type: "Dinner",
+    icon: Soup,
+    data,
+  },
+  {
+    type: "Snack",
+    icon: Beer,
+    data,
+  },
+];
 
 export default function Diary() {
-  return (
-    <View className="px-4 mt-5">
-      <CustomText className="text-xl">Nutrition</CustomText>
+  const renderMealCard = ({ item }) => {
+    const Icon = item.icon;
+    return (
       <CustomCard
-        className="mt-3 dark:bg-muted h-20"
+        className="mt-3 dark:bg-muted"
         body={
           <View className="flex-row justify-between items-center">
             <View className="flex-row items-center gap-1">
-              <EggFried
-                className="dark:text-foreground text-primary"
-                size={40}
-              />
+              <Icon className="dark:text-foreground text-primary" size={40} />
               <View className="ml-2">
-                <CustomText className="text-xl">Breakfast</CustomText>
+                <CustomText className="text-xl">{item.type}</CustomText>
                 <CustomText className="text-sm">0/250Kcal</CustomText>
               </View>
             </View>
-            <CirclePlus
-              className="dark:text-foreground text-primary"
-              size={30}
-            />
-          </View>
-        }
-      />
-      <CustomCard
-        className="mt-3 dark:bg-muted h-20"
-        body={
-          <View className="flex-row justify-between items-center">
-            <View className="flex-row items-center gap-1">
-              <CookingPot
-                className="dark:text-foreground text-primary"
-                size={40}
-              />
-              <View className="ml-2">
-                <CustomText className="text-xl">Lunch</CustomText>
-                <CustomText className="text-sm">0/250Kcal</CustomText>
-              </View>
-            </View>
-            <CirclePlus
-              className="dark:text-foreground text-primary"
-              size={30}
-            />
-          </View>
-        }
-      />
-      <CustomCard
-        className="mt-3 dark:bg-muted h-20"
-        body={
-          <View className="flex-row justify-between items-center">
-            <View className="flex-row items-center gap-1">
-              <Soup className="dark:text-foreground text-primary" size={40} />
-              <View className="ml-2">
-                <CustomText className="text-xl">Dinner</CustomText>
-                <CustomText className="text-sm">0/250Kcal</CustomText>
-              </View>
-            </View>
-            <CirclePlus
-              className="dark:text-foreground text-primary"
-              size={30}
-            />
-          </View>
-        }
-      />
-      <CustomCard
-        className="mt-3 dark:bg-muted h-20"
-        body={
-          <View className="flex-row justify-between items-center">
-            <View className="flex-row items-center gap-1">
-              <Beer className="dark:text-foreground text-primary" size={40} />
-              <View className="ml-2">
-                <CustomText className="text-xl">Snack</CustomText>
-                <CustomText className="text-sm">0/250Kcal</CustomText>
-              </View>
-            </View>
-            <Link href="/(auth)/(modal)/AddFood">
-              <CirclePlus
-                className="dark:text-foreground text-primary"
-                size={30}
-              />
+            <Link
+              href={{
+                pathname: "/(auth)/(modal)/AddFood",
+                params: { type: item.type },
+              }}
+              asChild
+            >
+              <CustomButton>
+                <CirclePlus
+                  className="dark:text-foreground text-primary"
+                  size={30}
+                />
+              </CustomButton>
             </Link>
           </View>
         }
+        footer={
+          <FlatList
+            data={item.data}
+            keyExtractor={(food) => food.id.toString()}
+            renderItem={({ item: food }) => (
+              <CustomButton className="p-1 mt-3 flex items-start">
+                <CustomText className="text-lg font-bold">
+                  {food.name}
+                </CustomText>
+                <CustomText className="text-sm">{food.nutrition}</CustomText>
+              </CustomButton>
+            )}
+            ItemSeparatorComponent={() => <View className="bg-primary h-0.5" />}
+          />
+        }
       />
-    </View>
+    );
+  };
+
+  return (
+    <FlatList
+      ListHeaderComponent={
+        <CustomText className="text-xl font-bold">Nutrients</CustomText>
+      }
+      style={{ marginBottom: 100 }}
+      data={meals}
+      keyExtractor={(item) => item.type}
+      renderItem={renderMealCard}
+      contentContainerStyle={{
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+      }}
+    />
   );
 }

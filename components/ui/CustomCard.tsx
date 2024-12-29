@@ -15,7 +15,7 @@ const CustomCard = ({ className, header, body, footer }: CustomCardProps) => {
   return (
     <View
       className={cn(
-        "flex bg-primary-foreground h-36 p-4 rounded elevation",
+        "flex bg-primary-foreground  p-4 rounded elevation",
         className
       )}
     >

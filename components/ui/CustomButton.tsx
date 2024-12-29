@@ -19,7 +19,7 @@ const CustomButton = ({
     <Pressable
       className={cn(
         props.disabled && "opacity-50",
-        "flex items-center justify-center rounded-md bg-primary active:opacity-90",
+        "flex items-center justify-center rounded-md active:opacity-40",
         className
       )}
       {...props}

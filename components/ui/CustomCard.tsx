@@ -15,14 +15,14 @@ const CustomCard = ({ className, header, body, footer }: CustomCardProps) => {
   return (
     <View
       className={cn(
-        "flex bg-primary-foreground h-36 m-3 p-4 rounded elevation",
+        "flex bg-primary-foreground h-36 p-4 rounded elevation",
         className
       )}
     >
       {header && (
         <CustomText className="text-2xl my-1 font-bold">{header}</CustomText>
       )}
-      {body && <View className="flex-1">{body}</View>}
+      {body && <>{body}</>}
       {footer && <View className="mt-auto">{footer}</View>}
     </View>
   );

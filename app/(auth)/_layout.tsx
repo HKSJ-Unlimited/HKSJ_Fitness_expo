@@ -8,6 +8,13 @@ export default function AuthLayout() {
       }}
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="(modal)/AddFood"
+        options={{
+          presentation: "modal",
+          animation: "fade_from_bottom",
+        }}
+      />
       <Stack.Screen name="user/profile" options={{ headerTitle: "Profile" }} />
     </Stack>
   );

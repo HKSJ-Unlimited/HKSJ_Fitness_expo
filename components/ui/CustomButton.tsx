@@ -6,7 +6,7 @@ import CustomText from "./CustomText";
 interface CustomButtonProps extends PressableProps {
   children?: React.ReactNode;
   className?: string;
-  title: string;
+  title?: string;
 }
 
 const CustomButton = ({
@@ -24,7 +24,9 @@ const CustomButton = ({
       )}
       {...props}
     >
-      <CustomText className="text-primary-foreground">{title}</CustomText>
+      {title && (
+        <CustomText className="text-primary-foreground">{title}</CustomText>
+      )}
       {children}
     </Pressable>
   );

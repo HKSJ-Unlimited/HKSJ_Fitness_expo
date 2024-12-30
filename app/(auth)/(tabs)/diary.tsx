@@ -8,6 +8,7 @@ import { CookingPot } from "@/lib/icons/CookingPot";
 import { Soup } from "@/lib/icons/Soup";
 import { Beer } from "@/lib/icons/Beer";
 import { CirclePlus } from "@/lib/icons/CirclePlus";
+import { SheetManager } from "react-native-actions-sheet";
 
 const data = [
   {
@@ -49,8 +50,80 @@ const meals = [
     data,
   },
 ];
+const fullNutrition: IFullNutrition[] = [
+  {
+    name: "Energy",
+    unit: "kcal",
+    amount: 370,
+  },
+  {
+    name: "Protein",
+    unit: "g",
+    amount: 6.81,
+  },
+  {
+    name: "Total lipid (fat)",
+    unit: "g",
+    amount: 0.55,
+  },
+  {
+    name: "Carbohydrate, by difference",
+    unit: "g",
+    amount: 81.68,
+  },
+  {
+    name: "Fiber, total dietary",
+    unit: "g",
+    amount: 2.8,
+  },
+  {
+    name: "Magnesium, Mg",
+    unit: "mg",
+    amount: 23,
+  },
+  {
+    name: "Sodium, Na",
+    unit: "mg",
+    amount: 7,
+  },
+  {
+    name: "Zinc, Zn",
+    unit: "mg",
+    amount: 1.2,
+  },
+  {
+    name: "Vitamin C, total ascorbic acid",
+    unit: "mg",
+    amount: 0,
+  },
+  {
+    name: "Vitamin B-12",
+    unit: "µg",
+    amount: 0,
+  },
+  {
+    name: "Fatty acids, total monounsaturated",
+    unit: "g",
+    amount: 0.2,
+  },
+  {
+    name: "Fatty acids, total polyunsaturated",
+    unit: "g",
+    amount: 0.198,
+  },
+  {
+    name: "Cholesterol",
+    unit: "mg",
+    amount: 0,
+  },
+];
 
 export default function Diary() {
+  const showMealNutrition = () => {
+    SheetManager.show("BottomNutritionSheet", {
+      payload: fullNutrition,
+    });
+  };
   const renderMealCard = ({ item }) => {
     const Icon = item.icon;
     return (
@@ -86,7 +159,10 @@ export default function Diary() {
             data={item.data}
             keyExtractor={(food) => food.id.toString()}
             renderItem={({ item: food }) => (
-              <CustomButton className="p-1 mt-3 flex items-start">
+              <CustomButton
+                className="p-1 mt-3 flex items-start"
+                onPress={showMealNutrition}
+              >
                 <CustomText className="text-lg font-bold">
                   {food.name}
                 </CustomText>

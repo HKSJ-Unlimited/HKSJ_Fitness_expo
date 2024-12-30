@@ -11,3 +11,9 @@ interface IFoodList {
 interface IError {
   message: string;
 }
+
+interface IFullNutrition {
+  name: string;
+  unit: string;
+  amount: number;
+}

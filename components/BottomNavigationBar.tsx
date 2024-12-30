@@ -46,7 +46,7 @@ const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
         borderRadius: width * 0.1,
         maxHeight: height * 0.1,
       }}
-      className="bg-primary-foreground"
+      className="bg-secondary"
     >
       <Animated.View
         style={[
@@ -57,7 +57,7 @@ const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
             height: dimensions.height - 10,
           },
         ]}
-        className="rounded-full absolute bg-primary opacity-10"
+        className="rounded-full absolute bg-accent-foreground opacity-10"
       />
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];

@@ -50,9 +50,24 @@ const TabBarButton = ({
     };
   });
   const icon: Record<string, () => JSX.Element> = {
-    dashboard: () => <LayoutDashboard size={18} className="text-primary" />,
-    diary: () => <NotebookPen size={18} className="text-primary" />,
-    settings: () => <Settings size={18} className="text-primary" />,
+    dashboard: () => (
+      <LayoutDashboard
+        size={18}
+        className="text-primary-foreground dark:text-primary"
+      />
+    ),
+    diary: () => (
+      <NotebookPen
+        size={18}
+        className="text-primary-foreground dark:text-primary"
+      />
+    ),
+    settings: () => (
+      <Settings
+        size={18}
+        className="text-primary-foreground dark:text-primary"
+      />
+    ),
   };
 
   return (
@@ -62,7 +77,7 @@ const TabBarButton = ({
       </Animated.View>
 
       <Animated.Text
-        className="text-primary"
+        className="text-primary-foreground dark:text-primary"
         style={[
           animatedTextStyle,
           {

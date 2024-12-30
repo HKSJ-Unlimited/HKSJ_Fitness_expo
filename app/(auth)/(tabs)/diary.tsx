@@ -128,7 +128,7 @@ export default function Diary() {
     const Icon = item.icon;
     return (
       <CustomCard
-        className="mt-3 dark:bg-muted"
+        className="mt-3"
         body={
           <View className="flex-row justify-between items-center">
             <View className="flex-row items-center gap-1">

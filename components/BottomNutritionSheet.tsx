@@ -13,7 +13,7 @@ function BottomNutritionSheet({ payload }: IBottomNutritionSheet) {
       <ActionSheet
         animated
         gestureEnabled
-        snapPoints={[60, 70, 100]}
+        snapPoints={[100, 80, 50]}
         containerStyle={{
           padding: 10,
           margin: 20,

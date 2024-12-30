@@ -1,6 +1,7 @@
 import { View, Text } from "react-native";
 import React, { useEffect } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
+import SearchBar from "@/components/SearchBar";
 
 const AddFood = () => {
   const { type } = useLocalSearchParams();
@@ -10,8 +11,10 @@ const AddFood = () => {
     navigation.setOptions({ title: `Add ${type}` });
   }, [navigation]);
   return (
-    <View>
-      <Text>AddFood</Text>
+    <View className="flex-1">
+      <View className="flex-1 mt-4">
+        <SearchBar />
+      </View>
     </View>
   );
 };

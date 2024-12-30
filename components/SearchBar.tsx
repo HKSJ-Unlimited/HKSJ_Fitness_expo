@@ -1,6 +1,7 @@
 import CustomButton from "@/components/ui/CustomButton";
 import CustomText from "@/components/ui/CustomText";
 import useDebounce from "@/hooks/useDebounce";
+import { CirclePlus } from "@/lib/icons/CirclePlus";
 import { QrCode } from "@/lib/icons/QRIcon";
 import { Search } from "@/lib/icons/Search";
 import { X } from "@/lib/icons/X";
@@ -14,7 +15,74 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-
+import { SheetManager } from "react-native-actions-sheet";
+const fullNutrition: IFullNutrition[] = [
+  {
+    name: "Energy",
+    unit: "kcal",
+    amount: 370,
+  },
+  {
+    name: "Protein",
+    unit: "g",
+    amount: 6.81,
+  },
+  {
+    name: "Total lipid (fat)",
+    unit: "g",
+    amount: 0.55,
+  },
+  {
+    name: "Carbohydrate, by difference",
+    unit: "g",
+    amount: 81.68,
+  },
+  {
+    name: "Fiber, total dietary",
+    unit: "g",
+    amount: 2.8,
+  },
+  {
+    name: "Magnesium, Mg",
+    unit: "mg",
+    amount: 23,
+  },
+  {
+    name: "Sodium, Na",
+    unit: "mg",
+    amount: 7,
+  },
+  {
+    name: "Zinc, Zn",
+    unit: "mg",
+    amount: 1.2,
+  },
+  {
+    name: "Vitamin C, total ascorbic acid",
+    unit: "mg",
+    amount: 0,
+  },
+  {
+    name: "Vitamin B-12",
+    unit: "µg",
+    amount: 0,
+  },
+  {
+    name: "Fatty acids, total monounsaturated",
+    unit: "g",
+    amount: 0.2,
+  },
+  {
+    name: "Fatty acids, total polyunsaturated",
+    unit: "g",
+    amount: 0.198,
+  },
+  {
+    name: "Cholesterol",
+    unit: "mg",
+    amount: 0,
+  },
+];
 const SearchBar = () => {
   const { colorScheme } = useColorScheme();
   const [query, setQuery] = useState("");
@@ -42,6 +110,14 @@ const SearchBar = () => {
 
   const handleFoodSelection = (foodId: number) => {
     console.log(foodId);
+    SheetManager.show("BottomNutritionSheet", {
+      payload: fullNutrition,
+    });
+  };
+  const handleAddFood = (foodId: number) => {
+    SheetManager.show("BottomAddFoodSheet", {
+      payload: fullNutrition,
+    });
   };
 
   const clearSearch = () => {
@@ -51,8 +127,8 @@ const SearchBar = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View className="flex-1">
-        <View className="flex flex-row bg-primary-foreground  p-4 mt-3 rounded-xl mx-4">
-          <Search size={20} className="mr-2 text-primary" />
+        <View className="flex flex-row p-4 bg-secondary rounded-xl mx-4">
+          <Search size={20} className="mr-2 text-foreground" />
           <TextInput
             value={query}
             onChangeText={handleSearch}
@@ -60,12 +136,16 @@ const SearchBar = () => {
             className="flex-1  placeholder:text-muted-foreground"
           />
           {query.length > 0 && (
-            <X onPress={clearSearch} size={20} className="mr-2 text-primary" />
+            <X
+              onPress={clearSearch}
+              size={20}
+              className="mr-2 text-foreground"
+            />
           )}
           <QrCode
             onPress={clearSearch}
             size={20}
-            className="mr-2 text-primary"
+            className="mr-2 text-foreground"
           />
         </View>
         <View className="flex-1">
@@ -78,11 +158,14 @@ const SearchBar = () => {
               return (
                 <CustomButton
                   onPress={() => handleFoodSelection(item.id)}
-                  className="bg-primary p-3 mt-2 rounded-xl mx-4"
+                  className="flex-row justify-between bg-accent p-8 mt-2 rounded-xl mx-4"
                 >
-                  <CustomText className="text-center text-secondary-foreground">
+                  <CustomText className="flex-shrink text-foreground">
                     {item.name}
                   </CustomText>
+                  <CustomButton onPress={() => handleAddFood(item.id)}>
+                    <CirclePlus className="text-foreground" size={25} />
+                  </CustomButton>
                 </CustomButton>
               );
             }}

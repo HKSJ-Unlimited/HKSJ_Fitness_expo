@@ -132,7 +132,7 @@ export default function Diary() {
         body={
           <View className="flex-row justify-between items-center">
             <View className="flex-row items-center gap-1">
-              <Icon className="dark:text-foreground text-primary" size={40} />
+              <Icon className="text-primary" size={40} />
               <View className="ml-2">
                 <CustomText className="text-xl">{item.type}</CustomText>
                 <CustomText className="text-sm">0/250Kcal</CustomText>
@@ -146,10 +146,7 @@ export default function Diary() {
               asChild
             >
               <CustomButton>
-                <CirclePlus
-                  className="dark:text-foreground text-primary"
-                  size={30}
-                />
+                <CirclePlus className="text-primary" size={30} />
               </CustomButton>
             </Link>
           </View>

@@ -1,8 +1,8 @@
 import { FlatList, View } from "react-native";
 import ActionSheet, { SheetProps } from "react-native-actions-sheet";
-import CustomText from "./ui/CustomText";
+import CustomText from "../ui/CustomText";
 import { SafeAreaView } from "react-native-safe-area-context";
-import CustomCard from "./ui/CustomCard";
+import GetThemeColor from "@/utlis/GetThemeColor";
 
 interface IBottomNutritionSheet extends SheetProps<"BottomNutritionSheet"> {
   payload: IFullNutrition[];
@@ -17,6 +17,7 @@ function BottomNutritionSheet({ payload }: IBottomNutritionSheet) {
         containerStyle={{
           padding: 10,
           margin: 20,
+          backgroundColor: GetThemeColor(),
         }}
       >
         <CustomText className="text-xl font-bold">Nutritional Facts</CustomText>

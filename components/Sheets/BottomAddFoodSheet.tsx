@@ -1,13 +1,20 @@
-import { FlatList, TextInput, View } from "react-native";
+import {
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+  TextInput,
+  View,
+} from "react-native";
 import ActionSheet, {
   SheetManager,
   SheetProps,
 } from "react-native-actions-sheet";
-import CustomText from "./ui/CustomText";
+import CustomText from "../ui/CustomText";
 import { SafeAreaView } from "react-native-safe-area-context";
-import CustomCard from "./ui/CustomCard";
+import CustomCard from "../ui/CustomCard";
 import { useState } from "react";
-import CustomButton from "./ui/CustomButton";
+import CustomButton from "../ui/CustomButton";
+import GetThemeColor from "@/utlis/GetThemeColor";
 
 interface IBottomAddFoodSheet extends SheetProps<"BottomAddFoodSheet"> {
   payload: IFullNutrition[];
@@ -21,7 +28,11 @@ function BottomAddFoodSheet({ payload }: IBottomAddFoodSheet) {
     SheetManager.hide("BottomAddFoodSheet");
   };
   return (
-    <SafeAreaView>
+    <SafeAreaView
+      style={{
+        backgroundColor: GetThemeColor(),
+      }}
+    >
       <ActionSheet
         keyboardHandlerEnabled={false}
         animated
@@ -29,6 +40,7 @@ function BottomAddFoodSheet({ payload }: IBottomAddFoodSheet) {
         containerStyle={{
           padding: 10,
           margin: 20,
+          backgroundColor: colorScheme === "dark" ? "#040201" : "#FDF9F7",
         }}
       >
         <CustomText className="text-xl font-bold">Select a portion</CustomText>

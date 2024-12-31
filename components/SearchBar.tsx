@@ -133,7 +133,7 @@ const SearchBar = () => {
             value={query}
             onChangeText={handleSearch}
             placeholder="What are you looking for?"
-            className="flex-1  placeholder:text-muted-foreground"
+            className="flex-1 text-foreground placeholder:text-muted-foreground"
           />
           {query.length > 0 && (
             <X
@@ -158,7 +158,7 @@ const SearchBar = () => {
               return (
                 <CustomButton
                   onPress={() => handleFoodSelection(item.id)}
-                  className="flex-row justify-between bg-accent p-8 mt-2 rounded-xl mx-4"
+                  className="flex-row justify-between bg-secondary p-8 mt-2 rounded-xl mx-4"
                 >
                   <CustomText className="flex-shrink text-foreground">
                     {item.name}

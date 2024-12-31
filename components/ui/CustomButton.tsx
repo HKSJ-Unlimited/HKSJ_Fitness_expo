@@ -20,9 +20,7 @@ const CustomButton = forwardRef(
         )}
         {...props}
       >
-        {title && (
-          <CustomText className="text-primary-foreground">{title}</CustomText>
-        )}
+        {title && <CustomText>{title}</CustomText>}
         {children}
       </Pressable>
     );

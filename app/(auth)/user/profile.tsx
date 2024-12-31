@@ -19,24 +19,20 @@ const Goals = () => (
       </View>
     </View>
     <View className="-mt-3 mr-10 flex justify-center">
-      <Goal size={120} className="text-foreground" />
+      <Goal size={120} className="text-accent-foreground" />
     </View>
   </View>
 );
 const GoalsFooter = () => (
-  <View>
-    <CustomButton className="flex self-start p-2 mb-2 " title="Edit goals" />
-  </View>
+  <CustomButton className="flex self-start p-2 mb-2 " title="Edit goals" />
 );
 const Progress = () => <View className="gap-2 flex"></View>;
 const ProgressFooter = () => (
-  <View>
-    <CustomButton className="flex self-start p-2 mb-2 " title="Add Weight" />
-  </View>
+  <CustomButton className="flex self-start p-2 mb-2" title="Add Weight" />
 );
 const User = () => {
   return (
-    <View className="mt-4">
+    <View className="mt-2 p-4 gap-2">
       <CustomAvatar
         className="self-center h-40 w-40"
         src="https://lh3.googleusercontent.com/a/ACg8ocKWZosXAn6XXInLC55UpVIJxipkztSIejFovvU8he9WyaUwt7rouw=s96-c"

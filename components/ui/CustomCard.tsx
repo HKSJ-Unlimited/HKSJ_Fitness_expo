@@ -20,7 +20,9 @@ const CustomCard = ({ className, header, body, footer }: CustomCardProps) => {
       )}
     >
       {header && (
-        <CustomText className="text-2xl my-1 font-bold">{header}</CustomText>
+        <CustomText className="text-accent-foreground text-2xl my-1 font-bold">
+          {header}
+        </CustomText>
       )}
       {body && <>{body}</>}
       {footer && <View className="mt-auto">{footer}</View>}

@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 import { SheetProvider } from "react-native-actions-sheet";
-import "../../components/Sheets";
+import "../../components/Sheets/Sheets";
 
 export default function AuthLayout() {
   return (

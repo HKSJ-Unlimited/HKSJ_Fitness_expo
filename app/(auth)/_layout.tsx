@@ -1,7 +1,7 @@
 import { Stack } from "expo-router";
 import { SheetProvider } from "react-native-actions-sheet";
 import "../../components/Sheets/Sheets";
-
+import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 export default function AuthLayout() {
   return (
     <SheetProvider>

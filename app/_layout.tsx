@@ -9,12 +9,18 @@ import {
 import { Slot, SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
-import { Platform } from "react-native";
+import { ActivityIndicator, Platform } from "react-native";
 import { NAV_THEME } from "@/lib/constants";
 import { useColorScheme } from "@/lib/useColorScheme";
 import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Suspense, useEffect } from "react";
+import { SQLiteProvider } from "expo-sqlite";
+import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
+import migrations from "../drizzle/migrations";
+import { db } from "@/db/init";
+
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
   colors: NAV_THEME.light,
@@ -36,7 +42,8 @@ export default function RootLayout() {
   const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
 
-  React.useEffect(() => {
+  const { success, error } = useMigrations(db, migrations);
+  useEffect(() => {
     (async () => {
       const theme = "light";
       if (Platform.OS === "web") {
@@ -61,7 +68,9 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     });
   }, []);
-
+  useEffect(() => {
+    if (!success) return;
+  }, [success]);
   if (!isColorSchemeLoaded) {
     return null;
   }

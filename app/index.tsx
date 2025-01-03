@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "expo-router";
 import {
   GoogleSignin,
@@ -13,7 +13,11 @@ GoogleSignin.configure({
   webClientId:
     "398697559104-8avft3hudnj39at7gtt1jnrngc1r19c5.apps.googleusercontent.com",
 });
+import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
+import { expoDB } from "@/db/init";
 const SignIn = () => {
+  // to debug drizzle
+  useDrizzleStudio(expoDB);
   const router = useRouter();
   const signIn = async () => {
     try {
@@ -53,6 +57,7 @@ const SignIn = () => {
       console.error(error);
     }
   };
+
   return (
     <SafeAreaView className="flex flex-1 justify-center items-center">
       <CustomButton

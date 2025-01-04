@@ -84,7 +84,14 @@ export default function RootLayout() {
       >
         <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
           <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-          <Slot />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="index" redirect />
+            <Stack.Screen name="(screens)" />
+          </Stack>
         </ThemeProvider>
       </GestureHandlerRootView>
     </SafeAreaProvider>

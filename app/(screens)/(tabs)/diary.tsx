@@ -124,7 +124,7 @@ export default function Diary() {
       payload: fullNutrition,
     });
   };
-  const renderMealCard = ({ item }) => {
+  const renderMealCard = ({ item }: any) => {
     const Icon = item.icon;
     return (
       <CustomCard
@@ -140,7 +140,7 @@ export default function Diary() {
             </View>
             <Link
               href={{
-                pathname: "/(auth)/(modal)/AddFood",
+                pathname: "/(screens)/(modal)/AddFood",
                 params: { type: item.type },
               }}
               asChild

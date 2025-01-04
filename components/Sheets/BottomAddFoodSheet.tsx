@@ -40,7 +40,7 @@ function BottomAddFoodSheet({ payload }: IBottomAddFoodSheet) {
         containerStyle={{
           padding: 10,
           margin: 20,
-          backgroundColor: colorScheme === "dark" ? "#040201" : "#FDF9F7",
+          backgroundColor: GetThemeColor(),
         }}
       >
         <CustomText className="text-xl font-bold">Select a portion</CustomText>

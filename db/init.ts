@@ -7,7 +7,7 @@ export const expoDB = SQLite.openDatabaseSync("HKSJ_Fitness", {
 });
 export const db = drizzle(expoDB);
 
-const createUser = async () => {
+export const createUser = async () => {
   const user = await db.select().from(usersTable);
   if (!user.length) {
     console.log("creating user");
@@ -16,6 +16,7 @@ const createUser = async () => {
     } catch (error) {
       console.error(error);
     }
+  } else {
+    console.log("user exists");
   }
 };
-createUser();

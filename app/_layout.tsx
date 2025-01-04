@@ -6,20 +6,19 @@ import {
   Theme,
   ThemeProvider,
 } from "@react-navigation/native";
-import { Slot, SplashScreen, Stack } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
-import { ActivityIndicator, Platform } from "react-native";
+import { Platform } from "react-native";
 import { NAV_THEME } from "@/lib/constants";
 import { useColorScheme } from "@/lib/useColorScheme";
 import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Suspense, useEffect } from "react";
-import { SQLiteProvider } from "expo-sqlite";
+import { useEffect } from "react";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import migrations from "../drizzle/migrations";
-import { db } from "@/db/init";
+import { createUser, db } from "@/db/init";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -55,7 +54,7 @@ export default function RootLayout() {
         setIsColorSchemeLoaded(true);
         return;
       }
-      const colorTheme = theme === "dark" ? "dark" : "light";
+      const colorTheme = theme;
       if (colorTheme !== colorScheme) {
         setColorScheme(colorTheme);
         setAndroidNavigationBar(colorTheme);
@@ -70,6 +69,7 @@ export default function RootLayout() {
   }, []);
   useEffect(() => {
     if (!success) return;
+    createUser();
   }, [success]);
   if (!isColorSchemeLoaded) {
     return null;

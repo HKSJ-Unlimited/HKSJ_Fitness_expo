@@ -17,3 +17,10 @@ interface IFullNutrition {
   unit: string;
   amount: number;
 }
+
+enum mealType {
+  breakfast = "breakfast",
+  lunch = "lunch",
+  dinner = "dinner",
+  snack = "snack",
+}

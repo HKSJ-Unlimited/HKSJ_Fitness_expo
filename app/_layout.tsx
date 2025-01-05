@@ -18,7 +18,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useEffect } from "react";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import migrations from "../drizzle/migrations";
-import { createUser, db } from "@/db/init";
+import { db } from "@/db/init";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -69,7 +69,6 @@ export default function RootLayout() {
   }, []);
   useEffect(() => {
     if (!success) return;
-    createUser();
   }, [success]);
   if (!isColorSchemeLoaded) {
     return null;

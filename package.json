@@ -14,6 +14,8 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@react-native-firebase/app": "^21.6.2",
+    "@react-native-firebase/auth": "^21.6.2",
     "@react-native-google-signin/google-signin": "^13.1.0",
     "@react-navigation/native": "^7.0.0",
     "babel-plugin-inline-import": "^3.0.0",
@@ -46,7 +48,8 @@
     "react-native-web": "~0.19.13",
     "tailwind-merge": "^2.5.5",
     "tailwindcss": "^3.4.15",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "expo-build-properties": "~0.13.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

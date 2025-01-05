@@ -3,9 +3,34 @@ import { SheetProvider } from "react-native-actions-sheet";
 import "../../components/Sheets/Sheets";
 import { db, expoDB } from "@/db/init";
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
+import { signInAnonymously, onAuthStateChanged } from "firebase/auth";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { useEffect } from "react";
+import { usersTable } from "@/db/schema";
 export default function AuthLayout() {
   // to debug drizzle
   useDrizzleStudio(expoDB);
+
+  // Handle user state changes
+  async function onAuthStateChanged(user: FirebaseAuthTypes.User | null) {
+    if (!user) {
+      const tempUser = await auth().signInAnonymously();
+      console.log(tempUser);
+      const q = await db
+        .insert(usersTable)
+        .values({})
+        .returning({ id: usersTable.id });
+      console.log(q);
+    }
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged((user) =>
+      onAuthStateChanged(user)
+    );
+    return subscriber;
+  }, []);
+
   return (
     <SheetProvider>
       <Stack

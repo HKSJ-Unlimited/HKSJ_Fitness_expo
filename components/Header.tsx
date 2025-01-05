@@ -4,12 +4,19 @@ import { ThemeToggle } from "./ThemeToggle";
 import CustomText from "./ui/CustomText";
 import CustomAvatar from "./ui/CustomAvatar";
 import { Link } from "expo-router";
+import { db } from "@/db/init";
+import { usersTable } from "@/db/schema";
+import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 
 const Header = () => {
+  const { data } = useLiveQuery(db.select().from(usersTable));
+  if (!data || data.length === 0) {
+    return null;
+  }
   return (
     <View className="flex  min-w-full flex-row justify-between items-center">
       <Link href="/(screens)/user/profile">
-        <CustomAvatar src="https://lh3.googleusercontent.com/a/ACg8ocKWZosXAn6XXInLC55UpVIJxipkztSIejFovvU8he9WyaUwt7rouw=s96-c" />
+        <CustomAvatar src={data[0].image} />
       </Link>
       <CustomText className="text-2xl">HKSJ Fitness</CustomText>
       <ThemeToggle />

@@ -34,14 +34,14 @@ const ProgressFooter = () => (
   <CustomButton className="flex self-start p-2 mb-2" title="Add Weight" />
 );
 const User = () => {
-  const { data, error, updatedAt } = useLiveQuery(db.select().from(usersTable));
+  const { data } = useLiveQuery(db.select().from(usersTable));
 
+  if (!data || data.length === 0) {
+    return null;
+  }
   return (
     <View className="mt-2 p-4 gap-2">
-      <CustomAvatar
-        className="self-center h-40 w-40"
-        src={data[0].image ?? ""}
-      />
+      <CustomAvatar className="self-center h-40 w-40" src={data[0].image} />
       <CustomText className="text-center text-2xl font-bold mt-2">
         {data[0].name}
       </CustomText>

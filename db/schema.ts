@@ -1,16 +1,18 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const usersTable = sqliteTable("users_table", {
-  id: int().primaryKey({ autoIncrement: true }),
-  name: text().default("Jeralt"),
-  email: text().default("jeralt@gmail.com").unique(),
-  age: int().default(27),
-  height: int().default(177),
-  image: text().default("https://www.gravatar.com/avatar/?d=identicon"),
+  id: int().primaryKey({ autoIncrement: true }).notNull(),
+  name: text().default("Jeralt").notNull(),
+  email: text().default("jeralt@gmail.com").unique().notNull(),
+  age: int().default(27).notNull(),
+  height: int().default(177).notNull(),
+  image: text()
+    .default("https://www.gravatar.com/avatar/?d=identicon")
+    .notNull(),
 });
 
 export const goalsTable = sqliteTable("goals_table", {
-  id: int().primaryKey({ autoIncrement: true }),
+  id: int().primaryKey({ autoIncrement: true }).notNull(),
   userId: int()
     .notNull()
     .references(() => usersTable.id),
@@ -28,11 +30,11 @@ export const mealTable = sqliteTable("meals_table", {
 });
 
 export const diaryTable = sqliteTable("diary_table", {
-  id: int().primaryKey({ autoIncrement: true }),
+  id: int().primaryKey({ autoIncrement: true }).notNull(),
   userId: int()
     .notNull()
     .references(() => usersTable.id),
-  date: text().default(new Date().toISOString()),
+  date: text().default(new Date().toISOString()).notNull(),
   mealId: int()
     .notNull()
     .references(() => mealTable.id),

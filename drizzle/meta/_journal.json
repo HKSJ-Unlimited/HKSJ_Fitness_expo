@@ -36,6 +36,13 @@
       "when": 1736077172324,
       "tag": "0004_unknown_giant_man",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1736095649298,
+      "tag": "0005_tranquil_stardust",
+      "breakpoints": true
     }
   ]
 }

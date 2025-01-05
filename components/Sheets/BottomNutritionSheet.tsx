@@ -1,16 +1,18 @@
 import { FlatList, View } from "react-native";
 import ActionSheet, { SheetProps } from "react-native-actions-sheet";
 import CustomText from "../ui/CustomText";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import GetThemeColor from "@/utlis/GetThemeColor";
 
 interface IBottomNutritionSheet extends SheetProps<"BottomNutritionSheet"> {
   payload: IFullNutrition[];
 }
 function BottomNutritionSheet({ payload }: IBottomNutritionSheet) {
+  const insets = useSafeAreaInsets();
   return (
-    <SafeAreaView>
+    <View>
       <ActionSheet
+        safeAreaInsets={insets}
         animated
         gestureEnabled
         snapPoints={[100, 80, 50]}
@@ -35,7 +37,7 @@ function BottomNutritionSheet({ payload }: IBottomNutritionSheet) {
           )}
         />
       </ActionSheet>
-    </SafeAreaView>
+    </View>
   );
 }
 

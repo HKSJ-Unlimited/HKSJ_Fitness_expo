@@ -10,7 +10,7 @@ import ActionSheet, {
   SheetProps,
 } from "react-native-actions-sheet";
 import CustomText from "../ui/CustomText";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CustomCard from "../ui/CustomCard";
 import { useState } from "react";
 import CustomButton from "../ui/CustomButton";
@@ -27,19 +27,20 @@ function BottomAddFoodSheet({ payload }: IBottomAddFoodSheet) {
   const handleAddPortion = () => {
     SheetManager.hide("BottomAddFoodSheet");
   };
+  const insets = useSafeAreaInsets();
   return (
-    <SafeAreaView
+    <View
       style={{
         backgroundColor: GetThemeColor(),
       }}
     >
       <ActionSheet
+        safeAreaInsets={insets}
         keyboardHandlerEnabled={false}
         animated
         gestureEnabled
         containerStyle={{
           padding: 10,
-          margin: 20,
           backgroundColor: GetThemeColor(),
         }}
       >
@@ -63,7 +64,7 @@ function BottomAddFoodSheet({ payload }: IBottomAddFoodSheet) {
           </CustomButton>
         )}
       </ActionSheet>
-    </SafeAreaView>
+    </View>
   );
 }
 

@@ -1,7 +1,7 @@
 import React from "react";
 import CustomButton from "@/components/ui/CustomButton";
 import { Chrome } from "@/lib/icons/Chrome";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ActionSheet from "react-native-actions-sheet";
 import GetThemeColor from "@/utlis/GetThemeColor";
 import CustomText from "../ui/CustomText";
@@ -25,9 +25,9 @@ const Login = () => {
       const currentUser = firebase.auth().currentUser;
       if (currentUser) {
         await db.update(usersTable).set({
-          email: currentUser.email,
-          name: currentUser.displayName,
-          image: currentUser.photoURL,
+          email: currentUser.email!,
+          name: currentUser.displayName!,
+          image: currentUser.photoURL!,
         });
       }
     } catch (error) {
@@ -79,15 +79,16 @@ const Login = () => {
       }
     }
   };
+  const insets = useSafeAreaInsets();
 
   return (
-    <SafeAreaView
+    <View
       style={{
         backgroundColor: GetThemeColor(),
       }}
     >
       <ActionSheet
-        keyboardHandlerEnabled={false}
+        safeAreaInsets={insets}
         animated
         gestureEnabled
         containerStyle={{
@@ -110,7 +111,7 @@ const Login = () => {
           </CustomButton>
         </View>
       </ActionSheet>
-    </SafeAreaView>
+    </View>
   );
 };
 

@@ -24,3 +24,12 @@ enum mealType {
   dinner = "dinner",
   snack = "snack",
 }
+
+interface IGoogleProfile {
+  email: string;
+  granted_scopes: string;
+  id: string;
+  name: string;
+  picture: string;
+  verified_email: true;
+}

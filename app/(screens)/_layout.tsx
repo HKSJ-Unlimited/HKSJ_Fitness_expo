@@ -14,13 +14,8 @@ export default function AuthLayout() {
   // Handle user state changes
   async function onAuthStateChanged(user: FirebaseAuthTypes.User | null) {
     if (!user) {
-      const tempUser = await auth().signInAnonymously();
-      console.log(tempUser);
-      const q = await db
-        .insert(usersTable)
-        .values({})
-        .returning({ id: usersTable.id });
-      console.log(q);
+      await auth().signInAnonymously();
+      await db.insert(usersTable).values({});
     }
   }
 

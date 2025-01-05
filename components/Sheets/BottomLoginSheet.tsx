@@ -1,61 +1,82 @@
-import React, { useEffect } from "react";
-import { useRouter } from "expo-router";
+import React from "react";
+import CustomButton from "@/components/ui/CustomButton";
+import { Chrome } from "@/lib/icons/Chrome";
+import { SafeAreaView } from "react-native-safe-area-context";
+import ActionSheet from "react-native-actions-sheet";
+import GetThemeColor from "@/utlis/GetThemeColor";
+import CustomText from "../ui/CustomText";
+import { View } from "react-native";
+import { firebase } from "@react-native-firebase/auth";
+import { db } from "@/db/init";
+import { usersTable } from "@/db/schema";
 import {
   GoogleSignin,
   isErrorWithCode,
   isSuccessResponse,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
-import CustomButton from "@/components/ui/CustomButton";
-import { Chrome } from "@/lib/icons/Chrome";
-import { SafeAreaView } from "react-native-safe-area-context";
 GoogleSignin.configure({
   webClientId:
     "398697559104-8avft3hudnj39at7gtt1jnrngc1r19c5.apps.googleusercontent.com",
 });
-import ActionSheet from "react-native-actions-sheet";
-import GetThemeColor from "@/utlis/GetThemeColor";
-import CustomText from "../ui/CustomText";
-import { View } from "react-native";
-const SignIn = () => {
-  const router = useRouter();
+const Login = () => {
+  const updateUser = async () => {
+    try {
+      const currentUser = firebase.auth().currentUser;
+      if (currentUser) {
+        await db.update(usersTable).set({
+          email: currentUser.email,
+          name: currentUser.displayName,
+          image: currentUser.photoURL,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const response = await GoogleSignin.signIn();
+      const signInResult = await GoogleSignin.signIn();
 
-      if (isSuccessResponse(response)) {
-        const { accessToken, idToken } = await GoogleSignin.getTokens();
-        console.log(accessToken);
-        console.log(idToken);
+      if (signInResult && signInResult.data?.idToken) {
+        // Create a Google credential with the token
+        const googleCredential = firebase.auth.GoogleAuthProvider.credential(
+          signInResult.data?.idToken
+        );
+
+        // Get the currently signed-in user (anonymous)
+        const currentUser = firebase.auth().currentUser;
+
+        if (currentUser) {
+          // Link the anonymous user with Google credentials
+          const linkedUser = await currentUser.linkWithCredential(
+            googleCredential
+          );
+
+          // Manually update the user profile with additional information
+          await linkedUser.user.updateProfile({
+            displayName: signInResult.data.user.givenName,
+            photoURL: signInResult.data.user.photo,
+          });
+          updateUser();
+          console.log("User profile updated");
+        } else {
+          console.log("No user is signed in");
+        }
       } else {
-        // sign in was cancelled by user
+        console.log("Sign in was cancelled by the user");
       }
     } catch (error) {
       if (isErrorWithCode(error)) {
-        console.log(error.message);
-        console.log(error.code);
-        switch (error.code) {
-          case statusCodes.IN_PROGRESS:
-            // operation (eg. sign in) already in progress
-            break;
-          case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-            // Android only, play services not available or outdated
-            break;
-          default:
-          // some other error happened
+        if (error.code === statusCodes.IN_PROGRESS) {
+          console.log("Operation (e.g., sign in) already in progress");
+        } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+          console.log("Play services not available or outdated");
+        } else {
+          console.error("An error occurred during sign in:", error);
         }
-      } else {
-        // an error that's not related to google sign in occurred
       }
-    }
-  };
-  const signOut = async () => {
-    try {
-      await GoogleSignin.signOut();
-      // setState({ user: null }); // Remember to remove the user from your app's state as well
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -73,13 +94,13 @@ const SignIn = () => {
           padding: 10,
           backgroundColor: GetThemeColor(),
           display: "flex",
-          flex: 0.3,
+          height: 200,
         }}
       >
         <CustomText className="font-bold py-4 text-xl">
-          Sign in to get the full experience
+          Sign in to get the full experience 😌
         </CustomText>
-        <View className="flex h-3/4 justify-center items-center">
+        <View className="flex m-5 justify-center items-center">
           <CustomButton
             title="Sign in with Google"
             className="p-3 px-12 flex flex-row-reverse gap-2 bg-primary"
@@ -93,4 +114,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Login;

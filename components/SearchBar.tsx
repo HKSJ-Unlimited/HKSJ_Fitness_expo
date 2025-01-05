@@ -7,6 +7,7 @@ import { Search } from "@/lib/icons/Search";
 import { X } from "@/lib/icons/X";
 import { useColorScheme } from "@/lib/useColorScheme";
 import { CallAPI } from "@/utlis/FetchInstance";
+import { firebase } from "@react-native-firebase/auth";
 import { useState } from "react";
 import {
   FlatList,
@@ -115,6 +116,11 @@ const SearchBar = () => {
     });
   };
   const handleAddFood = (foodId: number) => {
+    const user = firebase.auth().currentUser;
+    if (user?.isAnonymous) {
+      SheetManager.show("BottomLoginSheet");
+      return;
+    }
     SheetManager.show("BottomAddFoodSheet", {
       payload: fullNutrition,
     });

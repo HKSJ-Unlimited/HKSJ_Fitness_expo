@@ -5,10 +5,8 @@ import { CirclePlus } from "@/lib/icons/CirclePlus";
 import { QrCode } from "@/lib/icons/QRIcon";
 import { Search } from "@/lib/icons/Search";
 import { X } from "@/lib/icons/X";
-import { useColorScheme } from "@/lib/useColorScheme";
 import { CallAPI } from "@/utlis/FetchInstance";
-import { firebase } from "@react-native-firebase/auth";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   FlatList,
   Keyboard,
@@ -16,7 +14,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { SheetManager } from "react-native-actions-sheet";
+import CustomBottomSheet from "./BottomSheet";
+import BottomSheet, { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 const fullNutrition: IFullNutrition[] = [
   {
     name: "Energy",
@@ -85,10 +84,14 @@ const fullNutrition: IFullNutrition[] = [
   },
 ];
 const SearchBar = () => {
-  const { colorScheme } = useColorScheme();
+  const sheetRef = useRef<BottomSheet>(null);
+  const nutritionSheetRef = useRef<BottomSheet>(null);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<IFood[] | []>([]);
-
+  const [portionSize, setPortionSize] = useState("");
+  const handleChangePortion = (text: string) => {
+    setPortionSize(text);
+  };
   useDebounce(
     query,
     async (query) => {
@@ -110,20 +113,10 @@ const SearchBar = () => {
   };
 
   const handleFoodSelection = (foodId: number) => {
-    console.log(foodId);
-    SheetManager.show("BottomNutritionSheet", {
-      payload: fullNutrition,
-    });
+    nutritionSheetRef.current?.snapToIndex(0);
   };
   const handleAddFood = (foodId: number) => {
-    const user = firebase.auth().currentUser;
-    if (user?.isAnonymous) {
-      SheetManager.show("BottomLoginSheet");
-      return;
-    }
-    SheetManager.show("BottomAddFoodSheet", {
-      payload: fullNutrition,
-    });
+    sheetRef.current?.snapToIndex(0);
   };
 
   const clearSearch = () => {
@@ -177,6 +170,46 @@ const SearchBar = () => {
             }}
           />
         </View>
+        <CustomBottomSheet ref={sheetRef} snapPoints={["35%", "70%"]}>
+          <CustomText className="text-2xl font-bold">
+            Select a portion size
+          </CustomText>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View className="gap-2 mt-4">
+              <View className="flex flex-row p-3 rounded-xl bg-secondary">
+                <BottomSheetTextInput
+                  placeholder="Enter the portion"
+                  className="flex-1 p-2 placeholder:text-muted-foreground"
+                  onChangeText={handleChangePortion}
+                />
+                <CustomText className="">Grams</CustomText>
+              </View>
+              {portionSize && (
+                <CustomButton className="mt-4 bg-primary mx-36 p-3 rounded-md">
+                  <CustomText>Add Food</CustomText>
+                </CustomButton>
+              )}
+            </View>
+          </TouchableWithoutFeedback>
+        </CustomBottomSheet>
+
+        <CustomBottomSheet snapPoints={["70%", "90%"]} ref={nutritionSheetRef}>
+          <CustomText className="text-xl font-bold">
+            Nutritional Facts
+          </CustomText>
+          {fullNutrition.map((item) => (
+            <View
+              key={item.name}
+              className="flex-row px-3 my-3 justify-between items-center"
+            >
+              <CustomText>{item.name}</CustomText>
+              <View className="flex-row justify-end">
+                <CustomText>{item.amount}</CustomText>
+                <CustomText>{item.unit}</CustomText>
+              </View>
+            </View>
+          ))}
+        </CustomBottomSheet>
       </View>
     </TouchableWithoutFeedback>
   );

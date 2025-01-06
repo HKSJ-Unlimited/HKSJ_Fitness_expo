@@ -17,6 +17,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useEffect } from "react";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
+import { PortalProvider } from "@gorhom/portal";
 import migrations from "../drizzle/migrations";
 import { db } from "@/db/init";
 
@@ -83,14 +84,16 @@ export default function RootLayout() {
       >
         <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
           <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-          <Stack
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen name="index" redirect />
-            <Stack.Screen name="(screens)" />
-          </Stack>
+          <PortalProvider>
+            <Stack
+              screenOptions={{
+                headerShown: false,
+              }}
+            >
+              <Stack.Screen name="index" redirect />
+              <Stack.Screen name="(screens)" />
+            </Stack>
+          </PortalProvider>
         </ThemeProvider>
       </GestureHandlerRootView>
     </SafeAreaProvider>

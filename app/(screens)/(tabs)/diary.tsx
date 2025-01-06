@@ -8,7 +8,13 @@ import { CookingPot } from "@/lib/icons/CookingPot";
 import { Soup } from "@/lib/icons/Soup";
 import { Beer } from "@/lib/icons/Beer";
 import { CirclePlus } from "@/lib/icons/CirclePlus";
-import { SheetManager } from "react-native-actions-sheet";
+import React from "react";
+import { useRef, useState } from "react";
+import BottomSheet, {
+  BottomSheetFlatList,
+  BottomSheetScrollView,
+} from "@gorhom/bottom-sheet";
+import CustomBottomSheet from "@/components/BottomSheet";
 
 const data = [
   {
@@ -119,10 +125,10 @@ const fullNutrition: IFullNutrition[] = [
 ];
 
 export default function Diary() {
-  const showMealNutrition = () => {
-    SheetManager.show("BottomNutritionSheet", {
-      payload: fullNutrition,
-    });
+  const sheetRef = useRef<BottomSheet>(null);
+
+  const ToggleshowMealNutrition = () => {
+    sheetRef.current?.expand();
   };
   const renderMealCard = ({ item }: any) => {
     const Icon = item.icon;
@@ -158,7 +164,7 @@ export default function Diary() {
             renderItem={({ item: food }) => (
               <CustomButton
                 className="p-1 mt-3 flex items-start"
-                onPress={showMealNutrition}
+                onPress={ToggleshowMealNutrition}
               >
                 <CustomText className="text-lg font-bold">
                   {food.name}
@@ -174,18 +180,35 @@ export default function Diary() {
   };
 
   return (
-    <FlatList
-      ListHeaderComponent={
-        <CustomText className="text-xl font-bold">Nutrients</CustomText>
-      }
-      style={{ marginBottom: 100 }}
-      data={meals}
-      keyExtractor={(item) => item.type}
-      renderItem={renderMealCard}
-      contentContainerStyle={{
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-      }}
-    />
+    <>
+      <FlatList
+        ListHeaderComponent={
+          <CustomText className="text-xl font-bold">Nutrients</CustomText>
+        }
+        style={{ marginBottom: 100 }}
+        data={meals}
+        keyExtractor={(item) => item.type}
+        renderItem={renderMealCard}
+        contentContainerStyle={{
+          paddingHorizontal: 16,
+          paddingVertical: 8,
+        }}
+      />
+      <CustomBottomSheet ref={sheetRef}>
+        <CustomText className="text-xl font-bold">Nutritional Facts</CustomText>
+        {fullNutrition.map((item) => (
+          <View
+            key={item.name}
+            className="flex-row px-3 my-3 justify-between items-center"
+          >
+            <CustomText>{item.name}</CustomText>
+            <View className="flex-row justify-end">
+              <CustomText>{item.amount}</CustomText>
+              <CustomText>{item.unit}</CustomText>
+            </View>
+          </View>
+        ))}
+      </CustomBottomSheet>
+    </>
   );
 }

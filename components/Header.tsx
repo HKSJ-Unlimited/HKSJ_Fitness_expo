@@ -4,18 +4,23 @@ import { ThemeToggle } from "./ThemeToggle";
 import CustomText from "./ui/CustomText";
 import CustomAvatar from "./ui/CustomAvatar";
 import { Link } from "expo-router";
-import { db } from "@/db/init";
+
 import { usersTable } from "@/db/schema";
-import { useLiveQuery } from "drizzle-orm/expo-sqlite";
+import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
+import { useSQLiteContext } from "expo-sqlite";
 
 const Header = () => {
-  const { data } = useLiveQuery(db.select().from(usersTable));
-  if (!data || data.length === 0) {
-    return null;
+  const db = useSQLiteContext();
+  const drizzleDb = drizzle(db);
+
+  const { data } = useLiveQuery(drizzleDb.select().from(usersTable));
+
+  if (data.length === 0) {
+    return <CustomText>No data available</CustomText>;
   }
   return (
     <View className="flex  min-w-full flex-row justify-between items-center">
-      <Link href="/(screens)/user/profile">
+      <Link href="/(screens)/user/Profile">
         <CustomAvatar src={data[0].image} />
       </Link>
       <CustomText className="text-2xl">HKSJ Fitness</CustomText>

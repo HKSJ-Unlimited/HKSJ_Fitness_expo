@@ -1,19 +1,22 @@
 import { Stack } from "expo-router";
-import { db, expoDB } from "@/db/init";
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 import { signInAnonymously, onAuthStateChanged } from "firebase/auth";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { useEffect } from "react";
 import { usersTable } from "@/db/schema";
+import { useSQLiteContext } from "expo-sqlite";
+import { drizzle } from "drizzle-orm/expo-sqlite";
 export default function AuthLayout() {
+  const db = useSQLiteContext();
+  const drizzleDb = drizzle(db);
   // to debug drizzle
-  useDrizzleStudio(expoDB);
+  useDrizzleStudio(db);
 
   // Handle user state changes
   async function onAuthStateChanged(user: FirebaseAuthTypes.User | null) {
     if (!user) {
       await auth().signInAnonymously();
-      await db.insert(usersTable).values({});
+      await drizzleDb.insert(usersTable).values({});
     }
   }
 
@@ -38,7 +41,7 @@ export default function AuthLayout() {
           animation: "fade_from_bottom",
         }}
       />
-      <Stack.Screen name="user/profile" options={{ headerTitle: "Profile" }} />
+      <Stack.Screen name="user/Profile" options={{ headerTitle: "Profile" }} />
     </Stack>
   );
 }

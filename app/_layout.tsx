@@ -9,17 +9,18 @@ import {
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
-import { Platform } from "react-native";
+import { ActivityIndicator, Platform } from "react-native";
 import { NAV_THEME } from "@/lib/constants";
 import { useColorScheme } from "@/lib/useColorScheme";
 import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { PortalProvider } from "@gorhom/portal";
 import migrations from "../drizzle/migrations";
-import { db } from "@/db/init";
+import { openDatabaseSync, SQLiteProvider } from "expo-sqlite";
+import { drizzle } from "drizzle-orm/expo-sqlite";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -38,11 +39,16 @@ export {
 // Prevent the splash screen from auto-hiding before getting the color scheme.
 SplashScreen.preventAutoHideAsync();
 
+export const DATABASE_NAME = "HKSJ_Fitness";
+
 export default function RootLayout() {
   const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
 
+  const expoDb = openDatabaseSync(DATABASE_NAME);
+  const db = drizzle(expoDb);
   const { success, error } = useMigrations(db, migrations);
+
   useEffect(() => {
     (async () => {
       const theme = "light";
@@ -85,14 +91,22 @@ export default function RootLayout() {
         <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
           <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
           <PortalProvider>
-            <Stack
-              screenOptions={{
-                headerShown: false,
-              }}
-            >
-              <Stack.Screen name="index" redirect />
-              <Stack.Screen name="(screens)" />
-            </Stack>
+            <Suspense fallback={<ActivityIndicator size="large" />}>
+              <SQLiteProvider
+                databaseName={"HKSJ_Fitness"}
+                options={{ enableChangeListener: true }}
+                useSuspense
+              >
+                <Stack
+                  screenOptions={{
+                    headerShown: false,
+                  }}
+                >
+                  <Stack.Screen name="index" redirect />
+                  <Stack.Screen name="(screens)" />
+                </Stack>
+              </SQLiteProvider>
+            </Suspense>
           </PortalProvider>
         </ThemeProvider>
       </GestureHandlerRootView>

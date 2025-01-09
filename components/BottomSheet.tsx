@@ -6,7 +6,7 @@ import BottomSheet, {
 } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";
 import GetThemeColor from "@/utlis/GetThemeColor";
-import { Keyboard } from "react-native";
+import { Keyboard, Touchable, TouchableWithoutFeedback } from "react-native";
 
 type CustomBottomSheetProps = {
   children: React.ReactNode;
@@ -17,6 +17,8 @@ const CustomBottomSheet = forwardRef(
     const renderBackdrop = useCallback(
       (props: any) => (
         <BottomSheetBackdrop
+          onPress={() => Keyboard.dismiss()}
+          style={{ backgroundColor: "red" }}
           {...props}
           disappearsOnIndex={-1}
           appearsOnIndex={0}

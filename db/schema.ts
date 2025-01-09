@@ -15,7 +15,8 @@ export const goalsTable = sqliteTable("goals_table", {
   id: int().primaryKey({ autoIncrement: true }).notNull(),
   userId: int()
     .notNull()
-    .references(() => usersTable.id),
+    .references(() => usersTable.id)
+    .unique(),
   weight: int().notNull(),
   calories: int().notNull(),
 });

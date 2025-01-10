@@ -3,7 +3,7 @@ import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 import { signInAnonymously, onAuthStateChanged } from "firebase/auth";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { useEffect } from "react";
-import { usersTable } from "@/db/schema";
+import { goalsTable, usersTable } from "@/db/schema";
 import { useSQLiteContext } from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 export default function AuthLayout() {
@@ -16,7 +16,14 @@ export default function AuthLayout() {
   async function onAuthStateChanged(user: FirebaseAuthTypes.User | null) {
     if (!user) {
       await auth().signInAnonymously();
-      await drizzleDb.insert(usersTable).values({});
+      const user = await drizzleDb.insert(usersTable).values({}).returning({
+        id: usersTable.id,
+      });
+      await drizzleDb.insert(goalsTable).values({
+        calories: 2000,
+        weight: 69,
+        userId: user[0].id,
+      });
     }
   }
 

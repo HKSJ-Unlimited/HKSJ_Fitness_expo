@@ -10,7 +10,7 @@ import { Beer } from "@/lib/icons/Beer";
 import { CirclePlus } from "@/lib/icons/CirclePlus";
 import React from "react";
 import { useRef } from "react";
-import BottomSheet from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
 import CustomBottomSheet from "@/components/BottomSheet";
 import { IFullNutrition, mealType } from "@/Types/SharedTypes";
 
@@ -123,10 +123,10 @@ const fullNutrition: IFullNutrition[] = [
 ];
 
 export default function Diary() {
-  const sheetRef = useRef<BottomSheet>(null);
+  const sheetRef = useRef<BottomSheetModal>(null);
 
   const ToggleshowMealNutrition = () => {
-    sheetRef.current?.expand();
+    sheetRef.current?.present();
   };
   const renderMealCard = ({ item }: any) => {
     const Icon = item.icon;
@@ -192,7 +192,7 @@ export default function Diary() {
           paddingVertical: 8,
         }}
       />
-      <CustomBottomSheet ref={sheetRef}>
+      <CustomBottomSheet ref={sheetRef} snapPoints={["70%"]}>
         <CustomText className="text-xl font-bold">Nutritional Facts</CustomText>
         {fullNutrition.map((item) => (
           <View

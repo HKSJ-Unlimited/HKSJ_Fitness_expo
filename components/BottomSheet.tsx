@@ -18,7 +18,7 @@ const CustomBottomSheet = forwardRef(
     const renderBackdrop = useCallback(
       (props: any) => (
         <BottomSheetBackdrop
-          onPress={() => Keyboard.dismiss()}
+          // onPress={() => Keyboard.dismiss()}
           style={{ backgroundColor: "red" }}
           {...props}
           disappearsOnIndex={-1}

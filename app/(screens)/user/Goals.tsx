@@ -14,6 +14,7 @@ import BottomSheet, {
 } from "@gorhom/bottom-sheet";
 import { eq } from "drizzle-orm";
 import { useSQLiteContext } from "expo-sqlite";
+import EditGoal from "./EditGoal";
 
 type GoalsProps = {
   userId: number;
@@ -27,39 +28,10 @@ const Goals = ({ userId }: GoalsProps) => {
   );
 
   const sheetRef = useRef<BottomSheetModal>(null);
-  const [weight, setWeight] = useState("");
-  const [calories, setCalories] = useState("");
 
   const handleEditGoals = () => {
     sheetRef.current?.present();
   };
-
-  const handleGoalSave = useCallback(async () => {
-    try {
-      await drizzleDb
-        .insert(goalsTable)
-        .values({
-          weight: parseInt(weight),
-          calories: parseInt(calories),
-          userId,
-        })
-        .onConflictDoUpdate({
-          target: goalsTable.userId,
-          set: { weight: parseInt(weight), calories: parseInt(calories) },
-        });
-      Keyboard.dismiss();
-      setTimeout(() => sheetRef.current?.close(), 100);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [drizzleDb, weight, calories, userId]);
-
-  useEffect(() => {
-    if (data.length > 0) {
-      setWeight(data[0].weight.toString());
-      setCalories(data[0].calories.toString());
-    }
-  }, [data]);
 
   if (data.length === 0) {
     return <CustomText>No data available</CustomText>;
@@ -100,38 +72,12 @@ const Goals = ({ userId }: GoalsProps) => {
       />
 
       <CustomBottomSheet ref={sheetRef} snapPoints={["45%", "70%"]}>
-        <CustomText className="text-2xl font-bold">
-          Edit your goals 🚀
-        </CustomText>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View className="gap-2 mt-3">
-            <View className="flex flex-row p-3  rounded-xl bg-secondary">
-              <BottomSheetTextInput
-                className="flex-1 p-2"
-                placeholder="Add your ideal Weight"
-                keyboardType="numeric"
-                defaultValue={data[0].weight.toString()}
-                onChangeText={setWeight}
-              />
-              <CustomText className="self-center">Kg</CustomText>
-            </View>
-            <View className="flex flex-row p-3  rounded-xl bg-secondary">
-              <BottomSheetTextInput
-                className="flex-1 p-2"
-                placeholder="Add your ideal Calories"
-                keyboardType="numeric"
-                defaultValue={data[0].calories.toString()}
-                onChangeText={setCalories}
-              />
-              <CustomText className="self-center">Kcal</CustomText>
-            </View>
-            <CustomButton
-              className="bg-primary p-3 mx-28 mt-2"
-              title="Save"
-              onPress={handleGoalSave}
-            />
-          </View>
-        </TouchableWithoutFeedback>
+        <EditGoal
+          defaultCalories={data[0].calories}
+          defautWeight={data[0].weight}
+          userId={userId}
+          ref={sheetRef}
+        />
       </CustomBottomSheet>
     </View>
   );

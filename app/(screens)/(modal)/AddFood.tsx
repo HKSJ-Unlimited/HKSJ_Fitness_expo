@@ -1,10 +1,15 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React, { useEffect } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import SearchBar from "@/components/SearchBar";
+import { mealType } from "@/Types/SharedTypes";
 
 const AddFood = () => {
-  const { type } = useLocalSearchParams();
+  const {
+    type,
+  }: {
+    type: mealType;
+  } = useLocalSearchParams();
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -13,7 +18,7 @@ const AddFood = () => {
   return (
     <View className="flex-1">
       <View className="flex-1 mt-4">
-        <SearchBar />
+        <SearchBar meal={type} />
       </View>
     </View>
   );

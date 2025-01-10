@@ -9,12 +9,10 @@ import { Soup } from "@/lib/icons/Soup";
 import { Beer } from "@/lib/icons/Beer";
 import { CirclePlus } from "@/lib/icons/CirclePlus";
 import React from "react";
-import { useRef, useState } from "react";
-import BottomSheet, {
-  BottomSheetFlatList,
-  BottomSheetScrollView,
-} from "@gorhom/bottom-sheet";
+import { useRef } from "react";
+import BottomSheet from "@gorhom/bottom-sheet";
 import CustomBottomSheet from "@/components/BottomSheet";
+import { IFullNutrition, mealType } from "@/Types/SharedTypes";
 
 const data = [
   {
@@ -36,22 +34,22 @@ const data = [
 
 const meals = [
   {
-    type: "Breakfast",
+    type: mealType.breakfast,
     icon: EggFried,
     data,
   },
   {
-    type: "Lunch",
+    type: mealType.lunch,
     icon: CookingPot,
     data,
   },
   {
-    type: "Dinner",
+    type: mealType.dinner,
     icon: Soup,
     data,
   },
   {
-    type: "Snack",
+    type: mealType.snack,
     icon: Beer,
     data,
   },

@@ -21,6 +21,7 @@ import { PortalProvider } from "@gorhom/portal";
 import migrations from "../drizzle/migrations";
 import { openDatabaseSync, SQLiteProvider } from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -97,14 +98,16 @@ export default function RootLayout() {
                 options={{ enableChangeListener: true }}
                 useSuspense
               >
-                <Stack
-                  screenOptions={{
-                    headerShown: false,
-                  }}
-                >
-                  <Stack.Screen name="index" redirect />
-                  <Stack.Screen name="(screens)" />
-                </Stack>
+                <BottomSheetModalProvider>
+                  <Stack
+                    screenOptions={{
+                      headerShown: false,
+                    }}
+                  >
+                    <Stack.Screen name="index" redirect />
+                    <Stack.Screen name="(screens)" />
+                  </Stack>
+                </BottomSheetModalProvider>
               </SQLiteProvider>
             </Suspense>
           </PortalProvider>

@@ -8,7 +8,10 @@ import CustomAvatar from "@/components/ui/CustomAvatar";
 import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { goalsTable, usersTable } from "@/db/schema";
 import CustomBottomSheet from "@/components/BottomSheet";
-import BottomSheet, { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import BottomSheet, {
+  BottomSheetModal,
+  BottomSheetTextInput,
+} from "@gorhom/bottom-sheet";
 import { eq } from "drizzle-orm";
 import { useSQLiteContext } from "expo-sqlite";
 
@@ -23,12 +26,12 @@ const Goals = ({ userId }: GoalsProps) => {
     drizzleDb.select().from(goalsTable).where(eq(goalsTable.userId, userId))
   );
 
-  const sheetRef = useRef<BottomSheet>(null);
+  const sheetRef = useRef<BottomSheetModal>(null);
   const [weight, setWeight] = useState("");
   const [calories, setCalories] = useState("");
 
   const handleEditGoals = () => {
-    sheetRef.current?.snapToIndex(0);
+    sheetRef.current?.present();
   };
 
   const handleGoalSave = useCallback(async () => {

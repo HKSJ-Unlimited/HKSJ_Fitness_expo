@@ -1,35 +1,37 @@
-interface IFood {
+export interface IFood {
   id: number;
   name: string;
 }
 
-interface IFoodList {
+export interface IFoodList {
   message: string;
   data: IFood[];
 }
 
-interface IError {
+export interface IError {
   message: string;
 }
 
-interface IFullNutrition {
+export interface IFullNutrition {
   name: string;
   unit: string;
   amount: number;
 }
 
-enum mealType {
-  breakfast = "breakfast",
-  lunch = "lunch",
-  dinner = "dinner",
-  snack = "snack",
+export enum mealType {
+  breakfast = "Breakfast",
+  lunch = "Lunch",
+  dinner = "Dinner",
+  snack = "Snack",
 }
 
-interface IGoogleProfile {
-  email: string;
-  granted_scopes: string;
-  id: string;
+export interface IFullNutritionList {
   name: string;
-  picture: string;
-  verified_email: true;
+  foodCategory: string;
+  filteredData: IFullNutrition[];
+  description: string;
+}
+export interface IFullNutritionListResponse {
+  message: string;
+  data: IFullNutritionList;
 }

@@ -15,7 +15,17 @@ import {
   View,
 } from "react-native";
 import CustomBottomSheet from "./BottomSheet";
-import BottomSheet, { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import BottomSheet, {
+  BottomSheetModal,
+  BottomSheetTextInput,
+} from "@gorhom/bottom-sheet";
+import AddPortion from "./AddPortion";
+import {
+  IFood,
+  IFoodList,
+  IFullNutrition,
+  mealType,
+} from "@/Types/SharedTypes";
 const fullNutrition: IFullNutrition[] = [
   {
     name: "Energy",
@@ -83,15 +93,12 @@ const fullNutrition: IFullNutrition[] = [
     amount: 0,
   },
 ];
-const SearchBar = () => {
-  const sheetRef = useRef<BottomSheet>(null);
+const SearchBar = ({ meal }: { meal: mealType }) => {
+  const sheetRef = useRef<BottomSheetModal>(null);
   const nutritionSheetRef = useRef<BottomSheet>(null);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<IFood[] | []>([]);
-  const [portionSize, setPortionSize] = useState("");
-  const handleChangePortion = (text: string) => {
-    setPortionSize(text);
-  };
+
   useDebounce(
     query,
     async (query) => {
@@ -116,7 +123,7 @@ const SearchBar = () => {
     nutritionSheetRef.current?.snapToIndex(0);
   };
   const handleAddFood = (foodId: number) => {
-    sheetRef.current?.snapToIndex(0);
+    sheetRef.current?.present({ foodId });
   };
 
   const clearSearch = () => {
@@ -170,28 +177,6 @@ const SearchBar = () => {
             }}
           />
         </View>
-        <CustomBottomSheet ref={sheetRef} snapPoints={["35%", "70%"]}>
-          <CustomText className="text-2xl font-bold">
-            Select a portion size
-          </CustomText>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View className="gap-2 mt-4">
-              <View className="flex flex-row p-3 rounded-xl bg-secondary">
-                <BottomSheetTextInput
-                  placeholder="Enter the portion"
-                  className="flex-1 p-2 placeholder:text-muted-foreground"
-                  onChangeText={handleChangePortion}
-                />
-                <CustomText className="">Grams</CustomText>
-              </View>
-              {portionSize && (
-                <CustomButton className="mt-4 bg-primary mx-36 p-3 rounded-md">
-                  <CustomText>Add Food</CustomText>
-                </CustomButton>
-              )}
-            </View>
-          </TouchableWithoutFeedback>
-        </CustomBottomSheet>
 
         <CustomBottomSheet snapPoints={["70%", "90%"]} ref={nutritionSheetRef}>
           <CustomText className="text-xl font-bold">
@@ -209,6 +194,15 @@ const SearchBar = () => {
               </View>
             </View>
           ))}
+        </CustomBottomSheet>
+        <CustomBottomSheet ref={sheetRef} snapPoints={["35%", "70%"]}>
+          {({
+            data,
+          }: {
+            data: {
+              foodId: number;
+            };
+          }) => <AddPortion meal={meal} foodId={data.foodId} />}
         </CustomBottomSheet>
       </View>
     </TouchableWithoutFeedback>

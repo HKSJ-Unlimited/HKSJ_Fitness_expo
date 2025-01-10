@@ -1,6 +1,7 @@
 import React, { forwardRef, useCallback, useMemo } from "react";
 import BottomSheet, {
   BottomSheetBackdrop,
+  BottomSheetModal,
   BottomSheetView,
   useBottomSheetSpringConfigs,
 } from "@gorhom/bottom-sheet";
@@ -9,7 +10,7 @@ import GetThemeColor from "@/utlis/GetThemeColor";
 import { Keyboard, Touchable, TouchableWithoutFeedback } from "react-native";
 
 type CustomBottomSheetProps = {
-  children: React.ReactNode;
+  children: React.ReactNode | ((data: any) => React.ReactNode);
   snapPoints?: string[];
 };
 const CustomBottomSheet = forwardRef(
@@ -36,9 +37,9 @@ const CustomBottomSheet = forwardRef(
     });
     return (
       <Portal>
-        <BottomSheet
+        <BottomSheetModal
           ref={ref}
-          index={-1}
+          index={0}
           animationConfigs={animationConfigs}
           backdropComponent={renderBackdrop}
           snapPoints={snapPoints ?? ["25%", "50%", "70%"]}
@@ -49,16 +50,17 @@ const CustomBottomSheet = forwardRef(
           keyboardBlurBehavior="restore"
           android_keyboardInputMode="adjustResize"
         >
-          <BottomSheetView
-            // onTouchStart={() => Keyboard.dismiss()}
-            style={{
-              flex: 1,
-              padding: 10,
-            }}
-          >
-            {children}
-          </BottomSheetView>
-        </BottomSheet>
+          {(data) => (
+            <BottomSheetView
+              style={{
+                flex: 1,
+                padding: 10,
+              }}
+            >
+              <>{typeof children === "function" ? children(data) : children}</>
+            </BottomSheetView>
+          )}
+        </BottomSheetModal>
       </Portal>
     );
   }

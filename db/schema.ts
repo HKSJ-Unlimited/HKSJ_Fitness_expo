@@ -1,3 +1,4 @@
+import { IFullNutrition, mealType } from "@/Types/SharedTypes";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const usersTable = sqliteTable("users_table", {
@@ -25,7 +26,7 @@ export const mealTable = sqliteTable("meals_table", {
   id: int().primaryKey({ autoIncrement: true }),
   type: text().notNull().$type<mealType>(),
   name: text().notNull(),
-  about: text().notNull(),
+  description: text().notNull(),
   quantity: int().notNull(),
   nutrients: text().notNull().$type<IFullNutrition[]>(),
 });

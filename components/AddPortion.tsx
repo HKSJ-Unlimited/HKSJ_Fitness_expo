@@ -39,7 +39,7 @@ const AddPortion = ({ foodId, meal }: AddPortionProps) => {
           name: response.data.name,
           type: meal,
           description: response.data.description,
-          nutrients: response.data.filteredData,
+          nutrients: JSON.stringify(response.data.filteredData),
           quantity: parseInt(portionSize),
         })
         .returning({

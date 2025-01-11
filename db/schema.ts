@@ -28,7 +28,7 @@ export const mealTable = sqliteTable("meals_table", {
   name: text().notNull(),
   description: text().notNull(),
   quantity: int().notNull(),
-  nutrients: text().notNull().$type<IFullNutrition[]>(),
+  nutrients: text().notNull(),
 });
 
 export const diaryTable = sqliteTable("diary_table", {

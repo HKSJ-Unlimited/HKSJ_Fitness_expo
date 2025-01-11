@@ -26,6 +26,7 @@ import {
   IFullNutrition,
   mealType,
 } from "@/Types/SharedTypes";
+import BottomNutritionScreen from "./sheets/BottomNutritionScreen";
 const fullNutrition: IFullNutrition[] = [
   {
     name: "Energy",
@@ -95,7 +96,7 @@ const fullNutrition: IFullNutrition[] = [
 ];
 const SearchBar = ({ meal }: { meal: mealType }) => {
   const sheetRef = useRef<BottomSheetModal>(null);
-  const nutritionSheetRef = useRef<BottomSheet>(null);
+  const nutritionSheetRef = useRef<BottomSheetModal>(null);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<IFood[] | []>([]);
 
@@ -120,7 +121,7 @@ const SearchBar = ({ meal }: { meal: mealType }) => {
   };
 
   const handleFoodSelection = (foodId: number) => {
-    nutritionSheetRef.current?.snapToIndex(0);
+    nutritionSheetRef.current?.present({ foodId });
   };
   const handleAddFood = (foodId: number) => {
     sheetRef.current?.present({ foodId });
@@ -179,21 +180,9 @@ const SearchBar = ({ meal }: { meal: mealType }) => {
         </View>
 
         <CustomBottomSheet snapPoints={["70%", "90%"]} ref={nutritionSheetRef}>
-          <CustomText className="text-xl font-bold">
-            Nutritional Facts
-          </CustomText>
-          {fullNutrition.map((item) => (
-            <View
-              key={item.name}
-              className="flex-row px-3 my-3 justify-between items-center"
-            >
-              <CustomText>{item.name}</CustomText>
-              <View className="flex-row justify-end">
-                <CustomText>{item.amount}</CustomText>
-                <CustomText>{item.unit}</CustomText>
-              </View>
-            </View>
-          ))}
+          {({ data }: { data: { foodId: number } }) => (
+            <BottomNutritionScreen foodId={data.foodId} />
+          )}
         </CustomBottomSheet>
         <CustomBottomSheet ref={sheetRef} snapPoints={["35%", "70%"]}>
           {({

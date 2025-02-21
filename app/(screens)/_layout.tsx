@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { goalsTable, usersTable } from "@/db/schema";
 import { useSQLiteContext } from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
+import { getApp } from "@react-native-firebase/app";
 export default function AuthLayout() {
   const db = useSQLiteContext();
   const drizzleDb = drizzle(db);
@@ -15,7 +16,7 @@ export default function AuthLayout() {
   // Handle user state changes
   async function onAuthStateChanged(user: FirebaseAuthTypes.User | null) {
     if (!user) {
-      await auth().signInAnonymously();
+      await getApp().auth().signInAnonymously();
       const user = await drizzleDb.insert(usersTable).values({}).returning({
         id: usersTable.id,
       });
@@ -28,9 +29,9 @@ export default function AuthLayout() {
   }
 
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged((user) =>
-      onAuthStateChanged(user)
-    );
+    const subscriber = getApp()
+      .auth()
+      .onAuthStateChanged((user) => onAuthStateChanged(user));
     return subscriber;
   }, []);
 

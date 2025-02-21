@@ -8,37 +8,37 @@ import { drizzle } from "drizzle-orm/expo-sqlite";
 import { goalsTable } from "@/db/schema";
 
 type EditGoalProps = {
-  defautWeight: number;
+  defaultWeight: number;
   defaultCalories: number;
   userId: number;
 };
 const EditGoal = forwardRef(
-  ({ userId, defaultCalories, defautWeight }: EditGoalProps, ref: any) => {
+  ({ userId, defaultCalories, defaultWeight }: EditGoalProps, ref: any) => {
     const db = useSQLiteContext();
     const drizzleDb = drizzle(db);
 
-    const [weight, setWeight] = useState("");
-    const [calories, setCalories] = useState("");
+    const [weight, setWeight] = useState(defaultWeight);
+    const [calories, setCalories] = useState(defaultCalories);
 
-    const handleGoalSave = useCallback(async () => {
+    const handleGoalSave = async () => {
       try {
         await drizzleDb
           .insert(goalsTable)
           .values({
-            weight: parseInt(weight),
-            calories: parseInt(calories),
+            weight: weight,
+            calories: calories,
             userId,
           })
           .onConflictDoUpdate({
             target: goalsTable.userId,
-            set: { weight: parseInt(weight), calories: parseInt(calories) },
+            set: { weight: weight, calories: calories },
           });
         Keyboard.dismiss();
         setTimeout(() => ref.current?.close(), 100);
       } catch (error) {
         console.error(error);
       }
-    }, [drizzleDb, weight, calories, userId]);
+    };
     return (
       <>
         <CustomText className="text-2xl font-bold">
@@ -51,8 +51,8 @@ const EditGoal = forwardRef(
                 className="flex-1 p-2"
                 placeholder="Add your ideal Weight"
                 keyboardType="numeric"
-                defaultValue={defautWeight.toString()}
-                onChangeText={setWeight}
+                defaultValue={defaultWeight.toString()}
+                onChangeText={(text) => setWeight(Number(text))}
               />
               <CustomText className="self-center">Kg</CustomText>
             </View>
@@ -62,7 +62,7 @@ const EditGoal = forwardRef(
                 placeholder="Add your ideal Calories"
                 keyboardType="numeric"
                 defaultValue={defaultCalories.toString()}
-                onChangeText={setCalories}
+                onChangeText={(text) => setCalories(Number(text))}
               />
               <CustomText className="self-center">Kcal</CustomText>
             </View>

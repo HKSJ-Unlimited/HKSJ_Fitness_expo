@@ -1,17 +1,13 @@
-import { View, Keyboard, TouchableWithoutFeedback } from "react-native";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { View } from "react-native";
+import React, { useRef } from "react";
 import CustomText from "@/components/ui/CustomText";
 import CustomCard from "@/components/ui/CustomCard";
 import CustomButton from "@/components/ui/CustomButton";
 import { Goal } from "@/lib/icons/Goal";
-import CustomAvatar from "@/components/ui/CustomAvatar";
 import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { goalsTable, usersTable } from "@/db/schema";
 import CustomBottomSheet from "@/components/BottomSheet";
-import BottomSheet, {
-  BottomSheetModal,
-  BottomSheetTextInput,
-} from "@gorhom/bottom-sheet";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { eq } from "drizzle-orm";
 import { useSQLiteContext } from "expo-sqlite";
 import EditGoal from "./EditGoal";
@@ -74,7 +70,7 @@ const Goals = ({ userId }: GoalsProps) => {
       <CustomBottomSheet ref={sheetRef} snapPoints={["45%", "70%"]}>
         <EditGoal
           defaultCalories={data[0].calories}
-          defautWeight={data[0].weight}
+          defaultWeight={data[0].weight}
           userId={userId}
           ref={sheetRef}
         />

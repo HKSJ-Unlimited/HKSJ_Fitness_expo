@@ -1,12 +1,12 @@
 import { Stack } from "expo-router";
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
-import { signInAnonymously, onAuthStateChanged } from "firebase/auth";
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { useEffect } from "react";
 import { goalsTable, usersTable } from "@/db/schema";
 import { useSQLiteContext } from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import { getApp } from "@react-native-firebase/app";
+
 export default function AuthLayout() {
   const db = useSQLiteContext();
   const drizzleDb = drizzle(db);

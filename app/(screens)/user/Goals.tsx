@@ -5,7 +5,7 @@ import CustomCard from "@/components/ui/CustomCard";
 import CustomButton from "@/components/ui/CustomButton";
 import { Goal } from "@/lib/icons/Goal";
 import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
-import { goalsTable, usersTable } from "@/db/schema";
+import { goalsTable } from "@/db/schema";
 import CustomBottomSheet from "@/components/BottomSheet";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { eq } from "drizzle-orm";

@@ -5,7 +5,7 @@ import { CirclePlus } from "@/lib/icons/CirclePlus";
 import { QrCode } from "@/lib/icons/QRIcon";
 import { Search } from "@/lib/icons/Search";
 import { X } from "@/lib/icons/X";
-import { CallAPI } from "@/utlis/FetchInstance";
+import { CallAPI } from "@/utils/FetchInstance";
 import { useRef, useState } from "react";
 import {
   FlatList,

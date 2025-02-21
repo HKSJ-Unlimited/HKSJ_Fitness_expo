@@ -1,16 +1,12 @@
 import { FlatList, View } from "react-native";
-import CustomButton from "@/components/ui/CustomButton";
-import CustomCard from "@/components/ui/CustomCard";
 import CustomText from "@/components/ui/CustomText";
-import { Link } from "expo-router";
 import { EggFried } from "@/lib/icons/EggFried";
 import { CookingPot } from "@/lib/icons/CookingPot";
 import { Soup } from "@/lib/icons/Soup";
 import { Beer } from "@/lib/icons/Beer";
-import { CirclePlus } from "@/lib/icons/CirclePlus";
 import React, { useState } from "react";
 import { useRef } from "react";
-import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import CustomBottomSheet from "@/components/BottomSheet";
 import { IFullNutrition, mealType } from "@/Types/SharedTypes";
 import DiaryFoodCard from "@/components/DiaryFoodCard";
@@ -44,7 +40,7 @@ export default function Diary() {
   const sheetRef = useRef<BottomSheetModal>(null);
   const [fullNutrition, setFullNutrition] = useState<IFullNutrition[]>([]);
 
-  const ToggleshowMealNutrition = async (id: number) => {
+  const ToggleShowMealNutrition = async (id: number) => {
     const temp = await drizzleDb
       .select()
       .from(mealTable)
@@ -56,7 +52,7 @@ export default function Diary() {
 
   const renderMealCard = ({ item }: any) => {
     return (
-      <DiaryFoodCard item={item} onPressHandler={ToggleshowMealNutrition} />
+      <DiaryFoodCard item={item} onPressHandler={ToggleShowMealNutrition} />
     );
   };
 
@@ -75,7 +71,7 @@ export default function Diary() {
           paddingVertical: 8,
         }}
       />
-      <CustomBottomSheet ref={sheetRef} snapPoints={["50%"]}>
+      <CustomBottomSheet ref={sheetRef} snapPoints={["60%"]}>
         <CustomText className="text-xl font-bold">Nutritional Facts</CustomText>
         {fullNutrition.map((item) => (
           <View

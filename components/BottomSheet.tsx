@@ -6,7 +6,7 @@ import BottomSheet, {
   useBottomSheetSpringConfigs,
 } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";
-import GetThemeColor from "@/utlis/GetThemeColor";
+import GetThemeColor from "@/utils/GetThemeColor";
 import { Keyboard, Touchable, TouchableWithoutFeedback } from "react-native";
 
 type CustomBottomSheetProps = {

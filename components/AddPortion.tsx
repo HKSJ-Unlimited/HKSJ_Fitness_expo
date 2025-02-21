@@ -4,7 +4,7 @@ import CustomText from "./ui/CustomText";
 import CustomButton from "./ui/CustomButton";
 import { useSQLiteContext } from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
-import { CallAPI } from "@/utlis/FetchInstance";
+import { CallAPI } from "@/utils/FetchInstance";
 import { diaryTable, mealTable, usersTable } from "@/db/schema";
 import { IFullNutritionListResponse, mealType } from "@/Types/SharedTypes";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
@@ -14,8 +14,6 @@ type AddPortionProps = {
   meal: mealType;
 };
 const AddPortion = ({ foodId, meal }: AddPortionProps) => {
-  console.log(foodId);
-  console.log(meal);
   const [portionSize, setPortionSize] = useState("");
   const db = useSQLiteContext();
   const drizzleDb = drizzle(db);

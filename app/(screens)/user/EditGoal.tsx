@@ -1,5 +1,5 @@
 import { View, TouchableWithoutFeedback, Keyboard } from "react-native";
-import React, { forwardRef, useCallback, useState } from "react";
+import React, { forwardRef, useState } from "react";
 import CustomText from "@/components/ui/CustomText";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import CustomButton from "@/components/ui/CustomButton";

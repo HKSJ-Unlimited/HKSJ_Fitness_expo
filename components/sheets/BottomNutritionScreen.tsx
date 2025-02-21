@@ -1,16 +1,16 @@
-import { View, Text } from "react-native";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { View } from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
 import CustomText from "../ui/CustomText";
 import {
   IFullNutrition,
   IFullNutritionListResponse,
 } from "@/Types/SharedTypes";
-import { CallAPI } from "@/utlis/FetchInstance";
+import { CallAPI } from "@/utils/FetchInstance";
 
 const BottomNutritionScreen = ({ foodId }: { foodId: number }) => {
   const [fullNutrition, setFullNutrition] = useState<IFullNutrition[]>([]);
 
-  const fetchNutritiopnData = useMemo(async () => {
+  const fetchNutritionData = useMemo(async () => {
     const response = await CallAPI<IFullNutritionListResponse>(
       `/food/${foodId}`,
       "GET"
@@ -21,11 +21,11 @@ const BottomNutritionScreen = ({ foodId }: { foodId: number }) => {
   useEffect(() => {
     const fetchData = async () => {
       if (!foodId) return;
-      const data = await fetchNutritiopnData;
+      const data = await fetchNutritionData;
       setFullNutrition(data);
     };
     fetchData();
-  }, [fetchNutritiopnData]);
+  }, [fetchNutritionData]);
 
   return (
     <>

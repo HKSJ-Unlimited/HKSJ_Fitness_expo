@@ -35,7 +35,15 @@
       "expo-sqlite",
       "expo-build-properties",
       "@react-native-firebase/app",
-      "@react-native-firebase/auth"
+      "@react-native-firebase/auth",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/SpaceMono-Regular.ttf"
+          ]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

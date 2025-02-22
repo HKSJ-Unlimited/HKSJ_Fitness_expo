@@ -20,7 +20,7 @@ const Header = () => {
   }
   return (
     <View className="flex  min-w-full flex-row justify-between items-center">
-      <Link href="/(screens)/user/Profile">
+      <Link href="/(screens)/user/profile">
         <CustomAvatar src={data[0].image} />
       </Link>
       <CustomText className="text-2xl">HKSJ Fitness</CustomText>

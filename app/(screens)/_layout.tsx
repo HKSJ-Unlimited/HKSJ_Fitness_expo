@@ -41,7 +41,7 @@ export default function AuthLayout() {
           animation: "fade_from_bottom",
         }}
       />
-      <Stack.Screen name="user/Profile" options={{ headerTitle: "Profile" }} />
+      <Stack.Screen name="user/profile" options={{ headerTitle: "Profile" }} />
     </Stack>
   );
 }

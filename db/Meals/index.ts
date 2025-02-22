@@ -1,6 +1,6 @@
 import { IFullNutritionListResponse, mealType } from "@/Types/SharedTypes";
 import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
-import { SQLiteDatabase, useSQLiteContext } from "expo-sqlite";
+import { SQLiteDatabase } from "expo-sqlite";
 import { diaryTable, mealTable, totalCalories, usersTable } from "../schema";
 import { eq } from "drizzle-orm";
 
@@ -53,6 +53,8 @@ export const useDeleteFoodByType = async (
       .update(totalCalories)
       .set({ total })
       .where(eq(totalCalories.type, type));
+
+    await drizzleDb.delete(diaryTable).where(eq(diaryTable.mealId, id));
   } catch (error) {
     console.log(error);
   }

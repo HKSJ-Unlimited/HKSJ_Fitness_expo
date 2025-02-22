@@ -78,6 +78,20 @@
       "when": 1740181755028,
       "tag": "0010_adorable_lethal_legion",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "6",
+      "when": 1740185351740,
+      "tag": "0011_bizarre_raza",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "6",
+      "when": 1740185535712,
+      "tag": "0012_crazy_demogoblin",
+      "breakpoints": true
     }
   ]
 }

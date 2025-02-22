@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import CustomText from "./ui/CustomText";
 import CustomButton from "./ui/CustomButton";
 import { useSQLiteContext } from "expo-sqlite";
-import { drizzle } from "drizzle-orm/expo-sqlite";
 import { CallAPI } from "@/utils/FetchInstance";
 import { IFullNutritionListResponse, mealType } from "@/Types/SharedTypes";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";

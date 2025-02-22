@@ -5,8 +5,7 @@ import { diaryTable, mealTable, totalCalories, usersTable } from "../schema";
 import { eq } from "drizzle-orm";
 
 // Function to get meals by type
-export const useMealsByType = (type: mealType) => {
-  const db = useSQLiteContext();
+export const useMealsByType = (db: SQLiteDatabase, type: mealType) => {
   const drizzleDb = drizzle(db);
 
   return useLiveQuery(
@@ -15,8 +14,7 @@ export const useMealsByType = (type: mealType) => {
 };
 
 // Function to get total calories by type
-export const useTotalCaloriesByType = (type: mealType) => {
-  const db = useSQLiteContext();
+export const useTotalCaloriesByType = (db: SQLiteDatabase, type: mealType) => {
   const drizzleDb = drizzle(db);
   return useLiveQuery(
     drizzleDb
@@ -35,7 +33,6 @@ export const useDeleteFoodByType = async (
   type: mealType
 ) => {
   const drizzleDb = drizzle(db);
-
   try {
     const prev = await drizzleDb
       .delete(mealTable)
@@ -61,11 +58,12 @@ export const useDeleteFoodByType = async (
   }
 };
 
+// Function to get all meals
 export const useAddFood = async (
+  db: SQLiteDatabase,
   response: IFullNutritionListResponse,
   meal: mealType,
-  portionSize: string,
-  db: SQLiteDatabase
+  portionSize: string
 ) => {
   const drizzleDb = drizzle(db);
   let calorie = response.data.filteredData.find(
@@ -103,4 +101,11 @@ export const useAddFood = async (
     .update(totalCalories)
     .set({ total })
     .where(eq(totalCalories.type, meal));
+};
+
+// Function to get nutrition data
+export const useNutritionData = async (db: SQLiteDatabase, id: number) => {
+  const drizzleDb = drizzle(db);
+
+  return drizzleDb.select().from(mealTable).where(eq(mealTable.id, id));
 };

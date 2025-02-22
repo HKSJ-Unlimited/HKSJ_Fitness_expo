@@ -12,8 +12,7 @@ import { IFullNutrition, mealType } from "@/Types/SharedTypes";
 import DiaryFoodCard from "@/components/DiaryFoodCard";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import { useSQLiteContext } from "expo-sqlite";
-import { mealTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { useNutritionData } from "@/db/Meals";
 
 const meals = [
   {
@@ -36,16 +35,11 @@ const meals = [
 
 export default function Diary() {
   const db = useSQLiteContext();
-  const drizzleDb = drizzle(db);
   const sheetRef = useRef<BottomSheetModal>(null);
   const [fullNutrition, setFullNutrition] = useState<IFullNutrition[]>([]);
 
   const ToggleShowMealNutrition = async (id: number) => {
-    const temp = await drizzleDb
-      .select()
-      .from(mealTable)
-      .where(eq(mealTable.id, id));
-    console.log(temp[0].nutrients);
+    const temp = await useNutritionData(db, id);
     setFullNutrition(JSON.parse(temp[0].nutrients));
     sheetRef.current?.present();
   };

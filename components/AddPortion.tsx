@@ -5,14 +5,8 @@ import CustomButton from "./ui/CustomButton";
 import { useSQLiteContext } from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import { CallAPI } from "@/utils/FetchInstance";
-import { diaryTable, mealTable, totalCalories, usersTable } from "@/db/schema";
-import {
-  IFullNutritionListResponse,
-  INutrients,
-  mealType,
-} from "@/Types/SharedTypes";
+import { IFullNutritionListResponse, mealType } from "@/Types/SharedTypes";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
-import { eq } from "drizzle-orm";
 import { useAddFood } from "@/db/Meals";
 
 type AddPortionProps = {
@@ -22,7 +16,6 @@ type AddPortionProps = {
 const AddPortion = ({ foodId, meal }: AddPortionProps) => {
   const [portionSize, setPortionSize] = useState("");
   const db = useSQLiteContext();
-  const drizzleDb = drizzle(db);
 
   const handleChangePortion = (text: string) => {
     setPortionSize(text);
@@ -34,7 +27,7 @@ const AddPortion = ({ foodId, meal }: AddPortionProps) => {
         `/food/${foodId}?amount=${portionSize}`,
         "GET"
       );
-      await useAddFood(response, meal, portionSize, db);
+      await useAddFood(db, response, meal, portionSize);
 
       console.log("Food added successfully");
     } catch (error) {

@@ -2,16 +2,14 @@ import { View, FlatList, TouchableOpacity } from "react-native";
 import React from "react";
 import CustomCard from "./ui/CustomCard";
 import CustomText from "./ui/CustomText";
-import { Link, router } from "expo-router";
+import { Link } from "expo-router";
 import CustomButton from "./ui/CustomButton";
 import { CirclePlus } from "@/lib/icons/CirclePlus";
-import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { useSQLiteContext } from "expo-sqlite";
-import { mealTable, totalCalories } from "@/db/schema";
-import { count, eq, sum } from "drizzle-orm";
 import { Trash2 } from "@/lib/icons/Trash";
 import { mealType } from "@/Types/SharedTypes";
 import { LucideIcon } from "lucide-react-native";
+
 import {
   useDeleteFoodByType,
   useMealsByType,
@@ -29,11 +27,11 @@ const DiaryFoodCard = ({
   onPressHandler: (id: number) => void;
 }) => {
   const db = useSQLiteContext();
-  const drizzleDb = drizzle(db);
+
   const Icon = item.icon;
 
-  const { data: MealsData } = useMealsByType(item.type);
-  const { data: calories } = useTotalCaloriesByType(item.type);
+  const { data: MealsData } = useMealsByType(db, item.type);
+  const { data: calories } = useTotalCaloriesByType(db, item.type);
 
   const deleteFoodEntry = (id: number) => {
     useDeleteFoodByType(db, id, item.type);

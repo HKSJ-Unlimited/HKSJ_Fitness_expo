@@ -31,6 +31,12 @@ export const mealTable = sqliteTable("meals_table", {
   nutrients: text().notNull(),
 });
 
+export const totalCalories = sqliteTable("calorie_totals_table ", {
+  id: int().primaryKey({ autoIncrement: true }),
+  type: text().notNull().$type<mealType>(),
+  total: int().notNull().default(0),
+});
+
 export const diaryTable = sqliteTable("diary_table", {
   id: int().primaryKey({ autoIncrement: true }).notNull(),
   userId: int()

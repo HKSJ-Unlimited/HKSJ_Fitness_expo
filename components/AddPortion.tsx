@@ -5,9 +5,15 @@ import CustomButton from "./ui/CustomButton";
 import { useSQLiteContext } from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import { CallAPI } from "@/utils/FetchInstance";
-import { diaryTable, mealTable, usersTable } from "@/db/schema";
-import { IFullNutritionListResponse, mealType } from "@/Types/SharedTypes";
+import { diaryTable, mealTable, totalCalories, usersTable } from "@/db/schema";
+import {
+  IFullNutritionListResponse,
+  INutrients,
+  mealType,
+} from "@/Types/SharedTypes";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import { eq } from "drizzle-orm";
+import { useAddFood } from "@/db/Meals";
 
 type AddPortionProps = {
   foodId: number;
@@ -28,25 +34,8 @@ const AddPortion = ({ foodId, meal }: AddPortionProps) => {
         `/food/${foodId}?amount=${portionSize}`,
         "GET"
       );
-      const user = await drizzleDb
-        .select({ id: usersTable.id })
-        .from(usersTable);
-      const mealId = await drizzleDb
-        .insert(mealTable)
-        .values({
-          name: response.data.name,
-          type: meal,
-          description: response.data.description,
-          nutrients: JSON.stringify(response.data.filteredData),
-          quantity: parseInt(portionSize),
-        })
-        .returning({
-          id: mealTable.id,
-        });
-      await drizzleDb.insert(diaryTable).values({
-        mealId: mealId[0].id,
-        userId: user[0].id,
-      });
+      await useAddFood(response, meal, portionSize, db);
+
       console.log("Food added successfully");
     } catch (error) {
       console.log(error);

@@ -7,11 +7,16 @@ import CustomButton from "./ui/CustomButton";
 import { CirclePlus } from "@/lib/icons/CirclePlus";
 import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { useSQLiteContext } from "expo-sqlite";
-import { mealTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { mealTable, totalCalories } from "@/db/schema";
+import { count, eq, sum } from "drizzle-orm";
 import { Trash2 } from "@/lib/icons/Trash";
 import { mealType } from "@/Types/SharedTypes";
 import { LucideIcon } from "lucide-react-native";
+import {
+  useDeleteFoodByType,
+  useMealsByType,
+  useTotalCaloriesByType,
+} from "@/db/Meals";
 
 const DiaryFoodCard = ({
   item,
@@ -27,19 +32,13 @@ const DiaryFoodCard = ({
   const drizzleDb = drizzle(db);
   const Icon = item.icon;
 
-  const { data } = useLiveQuery(
-    drizzleDb.select().from(mealTable).where(eq(mealTable.type, item.type))
-  );
-  if (!data) return null;
+  const { data: MealsData } = useMealsByType(item.type);
+  const { data: calories } = useTotalCaloriesByType(item.type);
 
-  const deleteFoodEntry = async (id: number) => {
-    try {
-      console.log(id);
-      await drizzleDb.delete(mealTable).where(eq(mealTable.id, id));
-    } catch (error) {
-      console.log(error);
-    }
+  const deleteFoodEntry = (id: number) => {
+    useDeleteFoodByType(db, id, item.type);
   };
+  if (!calories || !MealsData) return null;
   return (
     <CustomCard
       className="mt-3"
@@ -49,7 +48,9 @@ const DiaryFoodCard = ({
             <Icon className="text-primary" size={40} />
             <View className="ml-2">
               <CustomText className="text-xl">{item.type}</CustomText>
-              <CustomText className="text-sm">0/250Kcal</CustomText>
+              <CustomText className="text-sm">
+                {calories[0]?.totalCalories} Kcal
+              </CustomText>
             </View>
           </View>
           <Link
@@ -67,7 +68,7 @@ const DiaryFoodCard = ({
       }
       footer={
         <FlatList
-          data={data}
+          data={MealsData}
           keyExtractor={(food) => food.id.toString()}
           renderItem={({ item: food }) => (
             <View className="flex-row justify-between items-center">

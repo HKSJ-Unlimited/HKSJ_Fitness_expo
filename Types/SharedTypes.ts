@@ -35,3 +35,9 @@ export interface IFullNutritionListResponse {
   message: string;
   data: IFullNutritionList;
 }
+
+export interface INutrients {
+  name: string;
+  unit: string;
+  amount: number;
+}

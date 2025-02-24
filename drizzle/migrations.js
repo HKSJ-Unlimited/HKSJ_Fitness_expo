@@ -14,6 +14,8 @@ import m0009 from './0009_narrow_slapstick.sql';
 import m0010 from './0010_adorable_lethal_legion.sql';
 import m0011 from './0011_bizarre_raza.sql';
 import m0012 from './0012_crazy_demogoblin.sql';
+import m0013 from './0013_first_carmella_unuscione.sql';
+import m0014 from './0014_bouncy_doctor_octopus.sql';
 
   export default {
     journal,
@@ -30,7 +32,9 @@ m0008,
 m0009,
 m0010,
 m0011,
-m0012
+m0012,
+m0013,
+m0014
     }
   }
   

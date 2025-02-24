@@ -1,4 +1,5 @@
 import { mealType } from "@/Types/SharedTypes";
+import { sql } from "drizzle-orm";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const usersTable = sqliteTable("users_table", {
@@ -36,6 +37,7 @@ export const totalCalories = sqliteTable("calorie_totals_table ", {
   id: int().primaryKey({ autoIncrement: true }),
   type: text().notNull().$type<mealType>(),
   total: int().notNull().default(0),
+  date: text().default(sql`(CURRENT_DATE)`),
 });
 
 export const diaryTable = sqliteTable("diary_table", {
@@ -43,7 +45,7 @@ export const diaryTable = sqliteTable("diary_table", {
   userId: int()
     .notNull()
     .references(() => usersTable.id),
-  date: text().default(new Date().toISOString()).notNull(),
+  date: text().default(sql`(CURRENT_DATE)`),
   mealId: int()
     .notNull()
     .references(() => mealTable.id),

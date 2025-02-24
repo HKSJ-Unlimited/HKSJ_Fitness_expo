@@ -61,7 +61,7 @@ const WeightChart = () => {
     return <Circle cx={x} cy={y} r={8} color="black" />;
   }
   return (
-    <View style={{ height: 300 }}>
+    <View style={{ height: 250 }}>
       <CartesianChart
         data={DATA}
         xKey="date"

@@ -1,11 +1,18 @@
+import { CalorieChart } from "@/components/charts/CaloriesChart";
+import { MacrosChart } from "@/components/charts/MacrosChart";
 import WeightChart from "@/components/charts/WeightChart";
-import { View } from "react-native";
+import CustomColors from "@/components/ui/CustomColors";
+import { ScrollView, View } from "react-native";
 
 export default function Dashboard() {
   return (
-    <View className="flex">
+    <ScrollView className="flex">
       {/* <CustomColors /> */}
-      <WeightChart />
-    </View>
+      <View className="mb-32">
+        <WeightChart />
+        <CalorieChart />
+        <MacrosChart />
+      </View>
+    </ScrollView>
   );
 }

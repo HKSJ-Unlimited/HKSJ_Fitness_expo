@@ -47,7 +47,7 @@ const DiaryFoodCard = ({
             <View className="ml-2">
               <CustomText className="text-xl">{item.type}</CustomText>
               <CustomText className="text-sm">
-                {calories[0]?.totalCalories} Kcal
+                {calories[0]?.totalCalories ?? 0} Kcal
               </CustomText>
             </View>
           </View>

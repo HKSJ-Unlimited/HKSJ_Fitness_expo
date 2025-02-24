@@ -1,8 +1,13 @@
-import { IFullNutritionListResponse, mealType } from "@/Types/SharedTypes";
+import {
+  IFullNutrition,
+  IFullNutritionListResponse,
+  mealType,
+} from "@/Types/SharedTypes";
 import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { SQLiteDatabase } from "expo-sqlite";
 import { diaryTable, mealTable, totalCalories, usersTable } from "../schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
+import { FormatDate } from "@/utils/FormatDate";
 
 // Function to get meals by type
 export const useMealsByType = (db: SQLiteDatabase, type: mealType) => {
@@ -60,6 +65,43 @@ export const useDeleteFoodByType = async (
   }
 };
 
+const useSetCalories = async (
+  db: SQLiteDatabase,
+  meal: mealType,
+  calorie: IFullNutrition | undefined,
+  date: string
+) => {
+  const drizzleDb = drizzle(db);
+  const formattedDate = FormatDate(date);
+
+  const currentCalories = await drizzleDb
+    .select({
+      total: totalCalories.total,
+    })
+    .from(totalCalories)
+    .where(
+      and(eq(totalCalories.type, meal), eq(totalCalories.date, formattedDate))
+    );
+
+  if (currentCalories.length > 0) {
+    let total = currentCalories[0].total + (calorie?.amount ?? 0);
+
+    await drizzleDb
+      .update(totalCalories)
+      .set({
+        total,
+      })
+      .where(
+        and(eq(totalCalories.type, meal), eq(totalCalories.date, formattedDate))
+      );
+  } else {
+    await drizzleDb.insert(totalCalories).values({
+      type: meal,
+      total: calorie?.amount ?? 0,
+    });
+  }
+};
+
 // Function to get all meals
 export const useAddFood = async (
   db: SQLiteDatabase,
@@ -91,18 +133,7 @@ export const useAddFood = async (
     mealId: mealId[0].id,
     userId: user[0].id,
   });
-  const currentCalories = await drizzleDb
-    .select({
-      total: totalCalories.total,
-    })
-    .from(totalCalories)
-    .where(eq(totalCalories.type, meal));
-
-  let total = currentCalories[0].total + (calorie?.amount ?? 0);
-  await drizzleDb
-    .update(totalCalories)
-    .set({ total })
-    .where(eq(totalCalories.type, meal));
+  useSetCalories(db, meal, calorie, new Date().toISOString());
 };
 
 // Function to get nutrition data

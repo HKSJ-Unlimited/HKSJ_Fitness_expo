@@ -1,0 +1,1 @@
+ALTER TABLE `progress_table` ADD `value` integer NOT NULL;

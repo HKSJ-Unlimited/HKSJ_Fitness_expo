@@ -34,7 +34,7 @@ const EditGoal = forwardRef(
             set: { weight: weight, calories: calories },
           });
         Keyboard.dismiss();
-        setTimeout(() => ref.current?.close(), 100);
+        setTimeout(() => ref.current?.close(), 300);
       } catch (error) {
         console.error(error);
       }

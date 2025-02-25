@@ -6,6 +6,7 @@ import { Circle, useFont } from "@shopify/react-native-skia";
 import { useSQLiteContext } from "expo-sqlite";
 import { useGetGoals, useGetProgress } from "@/db/User";
 import { progressType } from "@/Types/SharedTypes";
+import { useColorScheme } from "@/lib/useColorScheme";
 
 const format = (date: Date, pattern: string) => {
   return pattern
@@ -21,6 +22,8 @@ const WeightChart = () => {
   const db = useSQLiteContext();
   const { data: DATA } = useGetProgress(db, progressType.weight);
   const { data: Goals } = useGetGoals(db);
+  const { colorScheme } = useColorScheme();
+  const theme = colorScheme === "dark" ? "white" : "#636362";
 
   const font = useFont(require("../../assets/fonts/SpaceMono-Regular.ttf"), 12);
   const { state, isActive } = useChartPressState({
@@ -50,6 +53,8 @@ const WeightChart = () => {
           lineWidth: 0.3,
           formatXLabel: (ms) => format(new Date(ms), "MM/dd"),
           formatYLabel: (value) => `${value}kg`,
+          labelColor: theme,
+          lineColor: theme,
         }}
       >
         {({ points }) => (

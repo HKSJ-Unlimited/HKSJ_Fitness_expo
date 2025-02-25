@@ -36,7 +36,7 @@ const Goals = ({ userId }: GoalsProps) => {
     <View>
       <CustomCard
         className="h-64"
-        header="Progress"
+        header="Goals"
         body={
           <View className="flex flex-row justify-between">
             <View className="gap-2 flex flex-shrink">

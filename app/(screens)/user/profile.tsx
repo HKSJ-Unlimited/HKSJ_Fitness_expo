@@ -35,7 +35,7 @@ const Profile = () => {
       </CustomText>
       <CustomCard
         className="p-2"
-        header="Progress"
+        header="Weight"
         body={<Progress />}
         footer={<ProgressFooter />}
       />

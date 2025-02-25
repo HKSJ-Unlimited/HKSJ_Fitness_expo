@@ -8,11 +8,17 @@ import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { usersTable } from "@/db/schema";
 import { useSQLiteContext } from "expo-sqlite";
 import Goals from "./Goals";
+import WeightChart from "@/components/charts/WeightChart";
 
 const Progress = () => <View className="gap-2 flex"></View>;
-const ProgressFooter = () => (
-  <CustomButton className="flex self-start p-2 mb-2" title="Add Weight" />
-);
+const ProgressFooter = () => {
+  return (
+    <>
+      <WeightChart />
+      <CustomButton className="flex self-start p-2 mb-2" title="Add Weight" />
+    </>
+  );
+};
 const Profile = () => {
   const db = useSQLiteContext();
   const drizzleDb = drizzle(db);
@@ -28,7 +34,7 @@ const Profile = () => {
         {data[0].name}
       </CustomText>
       <CustomCard
-        className="h-64"
+        className="p-2"
         header="Progress"
         body={<Progress />}
         footer={<ProgressFooter />}

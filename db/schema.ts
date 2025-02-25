@@ -1,4 +1,4 @@
-import { mealType } from "@/Types/SharedTypes";
+import { mealType, progressType } from "@/Types/SharedTypes";
 import { sql } from "drizzle-orm";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
@@ -49,4 +49,14 @@ export const diaryTable = sqliteTable("diary_table", {
   mealId: int()
     .notNull()
     .references(() => mealTable.id),
+});
+
+export const progressTable = sqliteTable("progress_table", {
+  id: int().primaryKey({ autoIncrement: true }).notNull(),
+  userId: int()
+    .notNull()
+    .references(() => usersTable.id),
+  type: text().notNull().$type<progressType>(),
+  value: int().notNull(),
+  date: int().default(new Date().valueOf()).notNull(),
 });

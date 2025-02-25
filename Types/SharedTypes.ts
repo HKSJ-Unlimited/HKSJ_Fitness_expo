@@ -35,3 +35,8 @@ export interface IFullNutritionListResponse {
   message: string;
   data: IFullNutritionList;
 }
+
+export enum progressType {
+  weight = "Weight",
+  calories = "Calories",
+}

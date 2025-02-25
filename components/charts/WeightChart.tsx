@@ -3,41 +3,10 @@ import React from "react";
 import { CartesianChart, Line, useChartPressState } from "victory-native";
 import type { SharedValue } from "react-native-reanimated";
 import { Circle, useFont } from "@shopify/react-native-skia";
+import { useSQLiteContext } from "expo-sqlite";
+import { useGetGoals, useGetProgress } from "@/db/User";
+import { progressType } from "@/Types/SharedTypes";
 
-const DATA = [
-  {
-    date: new Date(2024, 5, 1).valueOf(),
-    weight: 72,
-  },
-  {
-    date: new Date(2024, 6, 2).valueOf(),
-    weight: 75,
-  },
-  {
-    date: new Date(2024, 7, 3).valueOf(),
-    weight: 77,
-  },
-  {
-    date: new Date(2024, 8, 4).valueOf(),
-    weight: 77,
-  },
-  {
-    date: new Date(2024, 10, 5).valueOf(),
-    weight: 82,
-  },
-  {
-    date: new Date(2025, 1).valueOf(),
-    weight: 82,
-  },
-  {
-    date: new Date(2025, 2).valueOf(),
-    weight: 85,
-  },
-  {
-    date: new Date(2025, 3).valueOf(),
-    weight: 85,
-  },
-];
 const format = (date: Date, pattern: string) => {
   return pattern
     .replace(/yyyy/g, date.getFullYear().toString())
@@ -49,8 +18,15 @@ const format = (date: Date, pattern: string) => {
     .replace(/ss/g, date.getSeconds().toString().padStart(2, "0"));
 };
 const WeightChart = () => {
+  const db = useSQLiteContext();
+  const { data: DATA } = useGetProgress(db, progressType.weight);
+  const { data: Goals } = useGetGoals(db);
+
   const font = useFont(require("../../assets/fonts/SpaceMono-Regular.ttf"), 12);
-  const { state, isActive } = useChartPressState({ x: 0, y: { weight: 0 } });
+  const { state, isActive } = useChartPressState({
+    x: 0,
+    y: { value: 0 },
+  });
   function ToolTip({
     x,
     y,
@@ -60,35 +36,35 @@ const WeightChart = () => {
   }) {
     return <Circle cx={x} cy={y} r={8} color="black" />;
   }
+  if (!DATA.length || !Goals.length) return null;
   return (
     <View style={{ height: 250 }}>
       <CartesianChart
         data={DATA}
         xKey="date"
-        yKeys={["weight"]}
+        yKeys={["value"]}
         chartPressState={state}
-        padding={15}
+        padding={5}
         axisOptions={{
           font,
           lineWidth: 0.3,
-          formatXLabel: (ms) => format(new Date(ms), "MM/yy"),
+          formatXLabel: (ms) => format(new Date(ms), "MM/dd"),
           formatYLabel: (value) => `${value}kg`,
         }}
       >
         {({ points }) => (
-          <>
-            {isActive ? (
-              <ToolTip x={state.x.position} y={state.y.weight.position} />
-            ) : null}
-            <Line
-              points={points.weight}
-              color="red"
-              strokeWidth={3}
-              animate={{ type: "timing", duration: 300 }}
-              curveType="bumpX"
-              connectMissingData={true}
-            />
-          </>
+          <Line
+            points={points.value}
+            color={
+              points.value[points.value.length - 1].yValue! > Goals[0].weight
+                ? "red"
+                : "green"
+            }
+            strokeWidth={3}
+            animate={{ type: "timing", duration: 300 }}
+            curveType="bumpX"
+            connectMissingData={true}
+          />
         )}
       </CartesianChart>
     </View>

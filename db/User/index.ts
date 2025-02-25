@@ -1,7 +1,13 @@
-import { drizzle } from "drizzle-orm/expo-sqlite";
+import { drizzle, useLiveQuery } from "drizzle-orm/expo-sqlite";
 import { SQLiteDatabase } from "expo-sqlite";
-import { goalsTable, totalCalories, usersTable } from "../schema";
-import { mealType } from "@/Types/SharedTypes";
+import {
+  goalsTable,
+  progressTable,
+  totalCalories,
+  usersTable,
+} from "../schema";
+import { mealType, progressType } from "@/Types/SharedTypes";
+import { eq } from "drizzle-orm";
 
 export const useInitUser = async (db: SQLiteDatabase) => {
   const drizzleDb = drizzle(db);
@@ -26,4 +32,16 @@ export const useInitUser = async (db: SQLiteDatabase) => {
   await drizzleDb.insert(totalCalories).values({
     type: mealType.snack,
   });
+};
+
+export const useGetProgress = (db: SQLiteDatabase, type: progressType) => {
+  const drizzleDb = drizzle(db);
+  return useLiveQuery(
+    drizzleDb.select().from(progressTable).where(eq(progressTable.type, type))
+  );
+};
+
+export const useGetGoals = (db: SQLiteDatabase) => {
+  const drizzleDb = drizzle(db);
+  return useLiveQuery(drizzleDb.select().from(goalsTable));
 };

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Pressable, View } from "react-native";
 import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
 import { MoonStar } from "@/lib/icons/MoonStar";
@@ -7,13 +8,21 @@ import { cn } from "@/lib/utils";
 
 export function ThemeToggle() {
   const { isDarkColorScheme, setColorScheme } = useColorScheme();
+  const [theme, setTheme] = useState<"light" | "dark">(
+    isDarkColorScheme ? "dark" : "light"
+  );
+
+  useEffect(() => {
+    setColorScheme(theme);
+    setAndroidNavigationBar(theme);
+    // AsyncStorage.setItem('theme', theme);
+  }, [theme]);
+
   return (
     <Pressable
       onPress={() => {
-        const newTheme = isDarkColorScheme ? "light" : "dark";
-        setColorScheme(newTheme);
-        setAndroidNavigationBar(newTheme);
-        // AsyncStorage.setItem('theme', newTheme);
+        const newTheme = theme === "dark" ? "light" : "dark";
+        setTheme(newTheme);
       }}
     >
       {({ pressed }) => (
@@ -23,7 +32,7 @@ export function ThemeToggle() {
             pressed && "opacity-70"
           )}
         >
-          {isDarkColorScheme ? (
+          {theme === "dark" ? (
             <MoonStar
               className="text-foreground"
               size={23}

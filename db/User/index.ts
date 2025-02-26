@@ -33,6 +33,7 @@ export const useInitUser = async (db: SQLiteDatabase) => {
   await drizzleDb.insert(totalCalories).values({
     type: mealType.snack,
   });
+  await useUpdateWeightProgress(db, 0, user[0].id);
 };
 
 export const useGetProgress = (db: SQLiteDatabase, type: progressType) => {
@@ -56,5 +57,18 @@ export const useUpdateUser = async (
     email: additionalUserInfo.profile?.email,
     name: additionalUserInfo.profile?.name,
     image: additionalUserInfo.profile?.picture,
+  });
+};
+
+export const useUpdateWeightProgress = async (
+  db: SQLiteDatabase,
+  weight: number,
+  userId: number
+) => {
+  const drizzleDb = drizzle(db);
+  await drizzleDb.insert(progressTable).values({
+    userId,
+    type: progressType.weight,
+    value: weight,
   });
 };

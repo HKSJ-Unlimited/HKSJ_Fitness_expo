@@ -7,6 +7,7 @@ import { useSQLiteContext } from "expo-sqlite";
 import { useGetGoals, useGetProgress } from "@/db/User";
 import { progressType } from "@/Types/SharedTypes";
 import { useColorScheme } from "@/lib/useColorScheme";
+import CustomText from "../ui/CustomText";
 
 const format = (date: Date, pattern: string) => {
   return pattern
@@ -39,7 +40,14 @@ const WeightChart = () => {
   }) {
     return <Circle cx={x} cy={y} r={8} color="black" />;
   }
-  if (!DATA.length || !Goals.length) return null;
+  if (!DATA.length || !Goals.length)
+    return (
+      <View className="h-20 flex justify-center items-center">
+        <CustomText className="text-center">
+          Add some data to see chart.
+        </CustomText>
+      </View>
+    );
   return (
     <View style={{ height: 250 }}>
       <CartesianChart
@@ -51,7 +59,7 @@ const WeightChart = () => {
         axisOptions={{
           font,
           lineWidth: 0.3,
-          formatXLabel: (ms) => format(new Date(ms), "MM/dd"),
+          formatXLabel: (ms) => format(new Date(ms), "MM/yy"),
           formatYLabel: (value) => `${value}kg`,
           labelColor: theme,
           lineColor: theme,

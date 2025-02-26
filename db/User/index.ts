@@ -8,6 +8,7 @@ import {
 } from "../schema";
 import { mealType, progressType } from "@/Types/SharedTypes";
 import { eq } from "drizzle-orm";
+import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 export const useInitUser = async (db: SQLiteDatabase) => {
   const drizzleDb = drizzle(db);
@@ -44,4 +45,16 @@ export const useGetProgress = (db: SQLiteDatabase, type: progressType) => {
 export const useGetGoals = (db: SQLiteDatabase) => {
   const drizzleDb = drizzle(db);
   return useLiveQuery(drizzleDb.select().from(goalsTable));
+};
+
+export const useUpdateUser = async (
+  db: SQLiteDatabase,
+  additionalUserInfo: FirebaseAuthTypes.AdditionalUserInfo
+) => {
+  const drizzleDb = drizzle(db);
+  await drizzleDb.update(usersTable).set({
+    email: additionalUserInfo.profile?.email,
+    name: additionalUserInfo.profile?.name,
+    image: additionalUserInfo.profile?.picture,
+  });
 };

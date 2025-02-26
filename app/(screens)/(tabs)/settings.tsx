@@ -4,12 +4,14 @@ import CustomButton from "@/components/ui/CustomButton";
 import CustomText from "@/components/ui/CustomText";
 import auth, {
   linkWithPopup,
+  signInWithPopup,
   signInWithRedirect,
 } from "@react-native-firebase/auth";
 import { getApp } from "@react-native-firebase/app";
 import { useSQLiteContext } from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import { usersTable } from "@/db/schema";
+import { useUpdateUser } from "@/db/User";
 interface FirebaseError extends Error {
   code: string;
 }
@@ -27,16 +29,15 @@ const Settings = () => {
     if (user) {
       try {
         const { additionalUserInfo } = await linkWithPopup(user, provider);
-        console.log("additionalUserInfo", additionalUserInfo);
-        await drizzleDb.update(usersTable).set({
-          email: additionalUserInfo?.profile?.email,
-          name: additionalUserInfo?.profile?.name,
-          image: additionalUserInfo?.profile?.picture,
-        });
+        if (additionalUserInfo) useUpdateUser(db, additionalUserInfo);
       } catch (error) {
         const firebaseError = error as FirebaseError;
         if (firebaseError.code === "auth/credential-already-in-use") {
-          await signInWithRedirect(getApp().auth(), provider);
+          const { additionalUserInfo } = await signInWithPopup(
+            getApp().auth(),
+            provider
+          );
+          if (additionalUserInfo) useUpdateUser(db, additionalUserInfo);
         } else {
           console.log("Error linking account", error);
         }

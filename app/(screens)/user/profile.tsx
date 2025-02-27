@@ -12,6 +12,8 @@ import WeightChart from "@/components/charts/WeightChart";
 import CustomButton from "@/components/ui/CustomButton";
 import BottomAddWeight from "@/components/sheets/BottomAddWeight";
 import Weight from "./Weight";
+import { ScrollView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Profile = () => {
   const db = useSQLiteContext();
@@ -22,19 +24,21 @@ const Profile = () => {
     return <CustomText>No data available</CustomText>;
   }
   return (
-    <View className="mt-2 p-4 gap-2">
-      <CustomAvatar className="self-center h-40 w-40" src={data[0].image} />
-      <CustomText className="text-center text-2xl font-bold mt-2">
-        {data[0].name}
-      </CustomText>
-      <CustomCard
-        className="p-2"
-        header="Weight"
-        body={<WeightChart />}
-        footer={<Weight />}
-      />
-      <Goals userId={data[0].id} />
-    </View>
+    <ScrollView className="flex-1 p-4">
+      <View className="mb-10">
+        <CustomAvatar className="self-center h-40 w-40" src={data[0].image} />
+        <CustomText className="text-center text-2xl font-bold mt-2">
+          {data[0].name}
+        </CustomText>
+        <CustomCard
+          className="p-2 my-3"
+          header="Weight"
+          body={<WeightChart />}
+          footer={<Weight />}
+        />
+        <Goals userId={data[0].id} />
+      </View>
+    </ScrollView>
   );
 };
 

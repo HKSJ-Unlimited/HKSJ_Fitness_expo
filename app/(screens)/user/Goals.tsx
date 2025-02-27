@@ -60,7 +60,7 @@ const Goals = ({ userId }: GoalsProps) => {
         }
         footer={
           <CustomButton
-            className="flex self-start p-2 mb-2 "
+            className="flex self-start mb-2 "
             title="Edit goals"
             onPress={handleEditGoals}
           />

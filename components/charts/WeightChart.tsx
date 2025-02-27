@@ -1,13 +1,14 @@
 import { View } from "react-native";
 import React from "react";
 import { CartesianChart, Line, useChartPressState } from "victory-native";
-import type { SharedValue } from "react-native-reanimated";
+import { useDerivedValue, type SharedValue } from "react-native-reanimated";
 import { Circle, useFont } from "@shopify/react-native-skia";
 import { useSQLiteContext } from "expo-sqlite";
 import { useGetGoals, useGetProgress } from "@/db/User";
 import { progressType } from "@/Types/SharedTypes";
 import { useColorScheme } from "@/lib/useColorScheme";
 import CustomText from "../ui/CustomText";
+import ActiveValueIndicator from "./ActiveValueIndicator";
 
 const format = (date: Date, pattern: string) => {
   return pattern
@@ -40,6 +41,11 @@ const WeightChart = () => {
   }) {
     return <Circle cx={x} cy={y} r={8} color="black" />;
   }
+  // Indicator color based on delta
+  const indicatorColor = useDerivedValue<string>(() => {
+    return "green";
+  });
+
   if (!DATA.length || !Goals.length)
     return (
       <View className="h-20 flex justify-center items-center">
@@ -58,26 +64,51 @@ const WeightChart = () => {
         padding={5}
         axisOptions={{
           font,
-          lineWidth: 0.3,
+          tickCount: 5,
+          labelOffset: { x: 12, y: 8 },
+          labelPosition: { x: "outset", y: "outset" },
+          axisSide: { x: "bottom", y: "left" },
+          lineWidth: 0.2,
           formatXLabel: (ms) => format(new Date(ms), "MM/yy"),
           formatYLabel: (value) => `${value}kg`,
           labelColor: theme,
           lineColor: theme,
         }}
+        renderOutside={({ chartBounds }) => (
+          <>
+            {isActive && (
+              <ActiveValueIndicator
+                xPosition={state.x.position}
+                yPosition={state.y.value.position}
+                bottom={chartBounds.bottom}
+                top={chartBounds.top}
+                activeValue={state.y.value.value}
+                textColor="#000"
+                lineColor="#000"
+                indicatorColor={indicatorColor}
+              />
+            )}
+          </>
+        )}
       >
         {({ points }) => (
-          <Line
-            points={points.value}
-            color={
-              points.value[points.value.length - 1].yValue! > Goals[0].weight
-                ? "red"
-                : "green"
-            }
-            strokeWidth={3}
-            animate={{ type: "timing", duration: 300 }}
-            curveType="bumpX"
-            connectMissingData={true}
-          />
+          <>
+            <Line
+              points={points.value}
+              color={
+                points.value[points.value.length - 1].yValue! > Goals[0].weight
+                  ? "red"
+                  : "green"
+              }
+              strokeWidth={3}
+              animate={{ type: "timing", duration: 300 }}
+              curveType="bumpX"
+              connectMissingData={true}
+            />
+            {/* {isActive && (
+              <ToolTip x={state.x.position} y={state.y.value.position} />
+            )} */}
+          </>
         )}
       </CartesianChart>
     </View>

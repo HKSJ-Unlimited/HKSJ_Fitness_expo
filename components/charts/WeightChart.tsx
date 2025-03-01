@@ -54,10 +54,14 @@ const WeightChart = () => {
         </CustomText>
       </View>
     );
+  const processedData =
+    DATA.length > 1
+      ? DATA
+      : [...DATA, { date: new Date().valueOf(), value: DATA[0].value }];
   return (
     <View style={{ height: 250 }}>
       <CartesianChart
-        data={DATA}
+        data={processedData}
         xKey="date"
         yKeys={["value"]}
         chartPressState={state}

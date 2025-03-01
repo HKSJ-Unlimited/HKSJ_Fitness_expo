@@ -25,7 +25,7 @@ const Profile = () => {
   }
   return (
     <ScrollView className="flex-1 p-4">
-      <View className="mb-10">
+      <View className="mb-20">
         <CustomAvatar className="self-center h-40 w-40" src={data[0].image} />
         <CustomText className="text-center text-2xl font-bold mt-2">
           {data[0].name}

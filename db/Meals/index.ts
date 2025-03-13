@@ -21,13 +21,16 @@ export const useMealsByType = (db: SQLiteDatabase, type: mealType) => {
 // Function to get total calories by type
 export const useTotalCaloriesByType = (db: SQLiteDatabase, type: mealType) => {
   const drizzleDb = drizzle(db);
+  const formattedDate = FormatDate(new Date().toISOString());
   return useLiveQuery(
     drizzleDb
       .select({
         totalCalories: totalCalories.total,
       })
       .from(totalCalories)
-      .where(eq(totalCalories.type, type))
+      .where(
+        and(eq(totalCalories.type, type), eq(totalCalories.date, formattedDate))
+      )
   );
 };
 
@@ -38,6 +41,7 @@ export const useDeleteFoodByType = async (
   type: mealType
 ) => {
   const drizzleDb = drizzle(db);
+  const formattedDate = FormatDate(new Date().toISOString());
   try {
     const prev = await drizzleDb
       .delete(mealTable)
@@ -51,13 +55,17 @@ export const useDeleteFoodByType = async (
         total: totalCalories.total,
       })
       .from(totalCalories)
-      .where(eq(totalCalories.type, type));
+      .where(
+        and(eq(totalCalories.type, type), eq(totalCalories.date, formattedDate))
+      );
 
     let total = currentCalories[0].total - prev[0].calories;
     await drizzleDb
       .update(totalCalories)
       .set({ total })
-      .where(eq(totalCalories.type, type));
+      .where(
+        and(eq(totalCalories.type, type), eq(totalCalories.date, formattedDate))
+      );
 
     await drizzleDb.delete(diaryTable).where(eq(diaryTable.mealId, id));
   } catch (error) {

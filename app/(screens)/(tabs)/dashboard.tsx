@@ -8,7 +8,7 @@ export default function Dashboard() {
   return (
     <ScrollView className="flex">
       {/* <CustomColors /> */}
-      <View className="mb-32 mt-5">
+      <View className="mb-32 gap-4 mt-5">
         <CalorieChart />
         <MacrosChart />
       </View>

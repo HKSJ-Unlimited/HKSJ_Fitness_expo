@@ -11,7 +11,7 @@ const DATA = () => [
 
 export function MacrosChart() {
   return (
-    <View style={{ height: 200 }}>
+    <View style={{ height: 250 }}>
       <PolarChart
         data={DATA()}
         labelKey={"label"}
@@ -35,17 +35,10 @@ export function MacrosChart() {
           }}
         </Pie.Chart>
       </PolarChart>
-      <View style={{ flexDirection: "row", alignSelf: "center", marginTop: 5 }}>
+      <View className="mx-20 flex-wrap flex-row items-center justify-center mt-2 gap-2">
         {DATA().map((d, index) => {
           return (
-            <View
-              key={index}
-              style={{
-                marginRight: 8,
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
+            <View key={index} className="flex-row items-center mr-2">
               <Canvas style={{ height: 12, width: 12, marginRight: 4 }}>
                 <Rect
                   rect={{ x: 0, y: 0, width: 12, height: 12 }}
